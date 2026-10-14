@@ -1,0 +1,21 @@
+{
+  "name": "oibsip-pizza-delivery",
+  "version": "1.0.0",
+  "description": "Full-Stack Pizza Delivery & Inventory Management Web Application (OIBSIP Task 1)",
+  "scripts": {
+    "dev:backend": "npm --prefix backend run dev",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "build:frontend": "npm --prefix frontend run build",
+    "build": "npm run build:frontend",
+    "test:backend": "npm --prefix backend test",
+    "test:frontend": "npm --prefix frontend test",
+    "test": "npm run test:backend && npm run test:frontend",
+    "seed": "npm --prefix backend run seed"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "author": "OIBSIP Full-Stack Intern",
+  "license": "ISC"
+}
