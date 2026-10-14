@@ -83,7 +83,7 @@ const AdminLoginPage = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 className="form-control"
                 style={{ paddingLeft: '38px' }}
-                placeholder="admin@pizzadelivery.com"
+                placeholder="kankush1907@gmail.com"
               />
             </div>
           </div>
@@ -115,8 +115,8 @@ const AdminLoginPage = () => {
         </form>
 
         <div style={{ marginTop: '20px', padding: '12px', backgroundColor: '#f8fafc', borderRadius: 'var(--radius-md)', fontSize: '0.78rem', color: 'var(--color-muted)' }}>
-          Default bootstrap credentials from `.env`:<br/>
-          <code>admin@pizzadelivery.com</code> / <code>AdminSecure@12345</code>
+          Configured Administrator Credentials:<br/>
+          <code>kankush1907@gmail.com</code> / <code>Ankush143@</code>
         </div>
       </div>
     </div>

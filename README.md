@@ -143,11 +143,11 @@ SMTP_HOST=smtp.ethereal.email
 SMTP_PORT=587
 SMTP_USER=your_smtp_user@ethereal.email
 SMTP_PASS=your_smtp_password
-ADMIN_ALERT_EMAIL=admin@slicecraftpizza.com
+ADMIN_ALERT_EMAIL=kankush1907@gmail.com
 
 # Initial Administrator Bootstrap
-INITIAL_ADMIN_EMAIL=admin@pizzadelivery.com
-INITIAL_ADMIN_PASSWORD=AdminSecure@12345
+INITIAL_ADMIN_EMAIL=kankush1907@gmail.com
+INITIAL_ADMIN_PASSWORD=Ankush143@
 
 # WhatsApp Customer Support Phone (Country code without + or spaces)
 WHATSAPP_SUPPORT_PHONE=919876543210
@@ -180,7 +180,7 @@ npm run seed
 ```
 
 > **Default Seed Accounts:**
-> - **Administrator**: `admin@pizzadelivery.com` / `AdminSecure@12345`
+> - **Administrator**: `kankush1907@gmail.com` / `Ankush143@`
 > - **Verified Customer**: `customer@slicecraftpizza.com` / `CustomerPass@123`
 
 ---

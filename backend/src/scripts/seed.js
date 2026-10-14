@@ -63,17 +63,24 @@ const seedDatabase = async () => {
     }
 
     // 2. Seed Administrator
-    const adminEmail = (process.env.INITIAL_ADMIN_EMAIL || 'admin@pizzadelivery.com').toLowerCase().trim();
+    const adminEmail = (process.env.INITIAL_ADMIN_EMAIL || 'kankush1907@gmail.com').toLowerCase().trim();
+    const adminPassword = process.env.INITIAL_ADMIN_PASSWORD || 'Ankush143@';
     let admin = await User.findOne({ email: adminEmail });
     if (!admin) {
       admin = await User.create({
-        name: process.env.INITIAL_ADMIN_NAME || 'Super Admin',
+        name: process.env.INITIAL_ADMIN_NAME || 'Ankush (Admin)',
         email: adminEmail,
-        password: process.env.INITIAL_ADMIN_PASSWORD || 'AdminSecure@12345',
+        password: adminPassword,
         role: 'ADMIN',
         isVerified: true,
       });
-      console.log(`[Seed] Created default Administrator: ${adminEmail}`);
+      console.log(`[Seed] Created Administrator: ${adminEmail}`);
+    } else {
+      admin.password = adminPassword;
+      admin.role = 'ADMIN';
+      admin.isVerified = true;
+      await admin.save();
+      console.log(`[Seed] Updated Administrator credentials for: ${adminEmail}`);
     }
 
     // 3. Seed Verified Customer for quick testing
