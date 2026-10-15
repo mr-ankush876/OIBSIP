@@ -1,8 +1,14 @@
 const mongoose = require('mongoose');
+const path = require('path');
+const fs = require('fs');
 
 let memoryServerInstance = null;
 
 const connectDB = async () => {
+  if (mongoose.connection.readyState >= 1) {
+    return mongoose.connection;
+  }
+
   const mongoUri = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/pizzadb';
 
   try {
@@ -14,11 +20,19 @@ const connectDB = async () => {
 
     // In development mode, auto-fallback to embedded MongoDB engine so the user has zero setup hassle!
     try {
-      console.log('[Database] Starting embedded MongoDB server (v7.0.14) fallback...');
+      console.log('[Database] Starting embedded MongoDB server (v7.0.14) fallback on local workspace...');
+      const localDataDir = path.resolve(__dirname, '../../.mongo-data');
+      if (!fs.existsSync(localDataDir)) {
+        fs.mkdirSync(localDataDir, { recursive: true });
+      }
+
       const { MongoMemoryServer } = require('mongodb-memory-server');
       memoryServerInstance = await MongoMemoryServer.create({
         binary: {
           version: '7.0.14',
+        },
+        instance: {
+          dbPath: localDataDir,
         },
       });
       const embeddedUri = memoryServerInstance.getUri();
@@ -34,9 +48,7 @@ const connectDB = async () => {
       return conn;
     } catch (fallbackErr) {
       console.error(`[Database Error] Embedded database fallback failed: ${fallbackErr.message}`);
-      if (process.env.NODE_ENV === 'production') {
-        process.exit(1);
-      }
+      throw fallbackErr;
     }
   }
 };

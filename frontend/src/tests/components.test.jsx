@@ -75,3 +75,45 @@ describe('Cart Totals & GST Financial Rules', () => {
     expect(total).toBe(630);
   });
 });
+
+import { WORLD_COUNTRIES, DEFAULT_COUNTRY, searchCountries, getCountryByDialCode } from '../data/countryCodes';
+
+describe('Worldwide Country Codes & Phone Selector Rules', () => {
+  it('includes comprehensive worldwide country codes dataset', () => {
+    expect(WORLD_COUNTRIES.length).toBeGreaterThanOrEqual(100);
+    const dialCodes = WORLD_COUNTRIES.map((c) => c.dialCode);
+    expect(dialCodes).toContain('+91'); // India
+    expect(dialCodes).toContain('+1');  // USA / Canada
+    expect(dialCodes).toContain('+44'); // UK
+    expect(dialCodes).toContain('+971'); // UAE
+    expect(dialCodes).toContain('+61'); // Australia
+    expect(dialCodes).toContain('+966'); // Saudi Arabia
+  });
+
+  it('defaults to India (+91) with 10 digits format', () => {
+    expect(DEFAULT_COUNTRY.code).toBe('IN');
+    expect(DEFAULT_COUNTRY.dialCode).toBe('+91');
+    expect(DEFAULT_COUNTRY.length).toBe(10);
+  });
+
+  it('searches countries by name, code, or dial code accurately', () => {
+    const byName = searchCountries('India');
+    expect(byName.length).toBeGreaterThanOrEqual(1);
+    expect(byName[0].code).toBe('IN');
+
+    const byDial = searchCountries('971');
+    expect(byDial.some((c) => c.code === 'AE')).toBe(true);
+
+    const byCode = searchCountries('GB');
+    expect(byCode.some((c) => c.code === 'GB')).toBe(true);
+  });
+
+  it('retrieves country by dial code helper', () => {
+    const india = getCountryByDialCode('+91');
+    expect(india.code).toBe('IN');
+
+    const uae = getCountryByDialCode('+971');
+    expect(uae.code).toBe('AE');
+  });
+});
+

@@ -63,14 +63,18 @@ const seedData = async () => {
       password: adminPassword,
       role: 'ADMIN',
       isVerified: true,
+      phone: '+919876543210',
+      countryCode: '+91',
     });
     console.log(`[Seed] Created Administrator: ${adminEmail}`);
   } else {
     admin.password = adminPassword;
     admin.role = 'ADMIN';
     admin.isVerified = true;
+    admin.phone = '+919876543210';
+    admin.countryCode = '+91';
     await admin.save();
-    console.log(`[Seed] Synchronized Administrator credentials for: ${adminEmail}`);
+    console.log(`[Seed] Synchronized Administrator credentials for: ${adminEmail} (Phone: +919876543210)`);
   }
 
   // 3. Seed Verified Customer
@@ -83,7 +87,16 @@ const seedData = async () => {
       password: 'CustomerPass@123',
       role: 'CUSTOMER',
       isVerified: true,
+      phone: '+919876500000',
+      countryCode: '+91',
     });
+    console.log(`[Seed] Created Verified Customer: ${customerEmail}`);
+  } else {
+    customer.password = 'CustomerPass@123';
+    customer.isVerified = true;
+    customer.phone = '+919876500000';
+    customer.countryCode = '+91';
+    await customer.save();
   }
 
   // 4. Seed Standard Pizzas

@@ -32,8 +32,21 @@ export const AuthProvider = ({ children }) => {
     fetchCurrentUser();
   }, []);
 
-  const login = async (email, password) => {
-    const data = await apiClient.post('/auth/login', { email, password });
+  const login = async (credentials, maybePassword) => {
+    let payload = {};
+    if (typeof credentials === 'object' && credentials !== null) {
+      payload = credentials;
+    } else if (typeof credentials === 'string' && maybePassword !== undefined) {
+      if (credentials.includes('@')) {
+        payload = { email: credentials, password: maybePassword };
+      } else {
+        payload = { phone: credentials, identifier: credentials, password: maybePassword };
+      }
+    } else {
+      payload = { identifier: credentials, password: maybePassword };
+    }
+
+    const data = await apiClient.post('/auth/login', payload);
     if (data.success && data.token) {
       localStorage.setItem('pizza_auth_token', data.token);
       setToken(data.token);
@@ -42,8 +55,21 @@ export const AuthProvider = ({ children }) => {
     return data;
   };
 
-  const adminLogin = async (email, password) => {
-    const data = await apiClient.post('/auth/admin-login', { email, password });
+  const adminLogin = async (credentials, maybePassword) => {
+    let payload = {};
+    if (typeof credentials === 'object' && credentials !== null) {
+      payload = credentials;
+    } else if (typeof credentials === 'string' && maybePassword !== undefined) {
+      if (credentials.includes('@')) {
+        payload = { email: credentials, password: maybePassword };
+      } else {
+        payload = { phone: credentials, identifier: credentials, password: maybePassword };
+      }
+    } else {
+      payload = { identifier: credentials, password: maybePassword };
+    }
+
+    const data = await apiClient.post('/auth/admin-login', payload);
     if (data.success && data.token) {
       localStorage.setItem('pizza_auth_token', data.token);
       setToken(data.token);

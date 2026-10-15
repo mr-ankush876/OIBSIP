@@ -34,6 +34,8 @@ const sendTokenResponse = (user, statusCode, res, message = 'Success') => {
         id: user._id,
         name: user.name,
         email: user.email,
+        phone: user.phone || '',
+        countryCode: user.countryCode || '+91',
         role: user.role,
         isVerified: user.isVerified,
         preferredLanguage: user.preferredLanguage || 'en',
@@ -47,7 +49,7 @@ const sendTokenResponse = (user, statusCode, res, message = 'Success') => {
  */
 const register = async (req, res, next) => {
   try {
-    const { name, email, password, confirmPassword, preferredLanguage } = req.body;
+    const { name, email, password, confirmPassword, preferredLanguage, phone, countryCode } = req.body;
 
     if (!name || !email || !password) {
       return res.status(400).json({
@@ -80,6 +82,15 @@ const register = async (req, res, next) => {
       });
     }
 
+    // Format phone number with country code if provided
+    let formattedPhone = '';
+    const cleanDial = (countryCode || '+91').trim();
+    if (phone) {
+      const cleanPhone = phone.replace(/\D/g, '');
+      const dialDigits = cleanDial.replace(/\D/g, '');
+      formattedPhone = `+${dialDigits}${cleanPhone}`;
+    }
+
     const user = new User({
       name: name.trim(),
       email: normalizedEmail,
@@ -87,6 +98,8 @@ const register = async (req, res, next) => {
       role: 'CUSTOMER',
       isVerified: false,
       preferredLanguage: preferredLanguage || 'en',
+      phone: formattedPhone,
+      countryCode: cleanDial,
     });
 
     const rawToken = user.generateVerificationToken();
@@ -202,22 +215,52 @@ const resendVerification = async (req, res, next) => {
  */
 const login = async (req, res, next) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, phone, countryCode, identifier } = req.body;
 
-    if (!email || !password) {
+    if (!password || (!email && !phone && !identifier)) {
       return res.status(400).json({
         success: false,
-        message: 'Please provide both email and password.',
+        message: 'Please provide email or mobile number, and password.',
       });
     }
 
-    const normalizedEmail = email.toLowerCase().trim();
-    const user = await User.findOne({ email: normalizedEmail }).select('+password');
+    let userQuery = null;
+
+    if (phone) {
+      const cleanPhone = phone.replace(/\D/g, '');
+      const cleanDial = (countryCode || '+91').trim();
+      const dialDigits = cleanDial.replace(/\D/g, '');
+      const fullE164 = `+${dialDigits}${cleanPhone}`;
+
+      userQuery = {
+        $or: [
+          { phone: fullE164 },
+          { phone: cleanPhone },
+          { phone: phone.trim() },
+          { phone: `+${cleanPhone}` },
+        ],
+      };
+    } else if (identifier && !identifier.includes('@')) {
+      const cleanDigits = identifier.replace(/\D/g, '');
+      userQuery = {
+        $or: [
+          { phone: identifier.trim() },
+          { phone: `+${cleanDigits}` },
+          { phone: cleanDigits },
+          { email: identifier.toLowerCase().trim() },
+        ],
+      };
+    } else {
+      const targetEmail = (email || identifier || '').toLowerCase().trim();
+      userQuery = { email: targetEmail };
+    }
+
+    const user = await User.findOne(userQuery).select('+password');
 
     if (!user) {
       return res.status(401).json({
         success: false,
-        message: 'Invalid credentials. Please verify your email and password.',
+        message: 'Invalid credentials. Please verify your email/phone and password.',
       });
     }
 
@@ -225,7 +268,7 @@ const login = async (req, res, next) => {
     if (!isMatch) {
       return res.status(401).json({
         success: false,
-        message: 'Invalid credentials. Please verify your email and password.',
+        message: 'Invalid credentials. Please verify your email/phone and password.',
       });
     }
 
@@ -251,17 +294,49 @@ const login = async (req, res, next) => {
  */
 const adminLogin = async (req, res, next) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, phone, countryCode, identifier } = req.body;
 
-    if (!email || !password) {
+    if (!password || (!email && !phone && !identifier)) {
       return res.status(400).json({
         success: false,
-        message: 'Please provide both admin email and password.',
+        message: 'Please provide administrator email or phone, and password.',
       });
     }
 
-    const normalizedEmail = email.toLowerCase().trim();
-    const user = await User.findOne({ email: normalizedEmail }).select('+password');
+    let userQuery = null;
+
+    if (phone) {
+      const cleanPhone = phone.replace(/\D/g, '');
+      const cleanDial = (countryCode || '+91').trim();
+      const dialDigits = cleanDial.replace(/\D/g, '');
+      const fullE164 = `+${dialDigits}${cleanPhone}`;
+
+      userQuery = {
+        role: 'ADMIN',
+        $or: [
+          { phone: fullE164 },
+          { phone: cleanPhone },
+          { phone: phone.trim() },
+          { phone: `+${cleanPhone}` },
+        ],
+      };
+    } else if (identifier && !identifier.includes('@')) {
+      const cleanDigits = identifier.replace(/\D/g, '');
+      userQuery = {
+        role: 'ADMIN',
+        $or: [
+          { phone: identifier.trim() },
+          { phone: `+${cleanDigits}` },
+          { phone: cleanDigits },
+          { email: identifier.toLowerCase().trim() },
+        ],
+      };
+    } else {
+      const targetEmail = (email || identifier || '').toLowerCase().trim();
+      userQuery = { role: 'ADMIN', email: targetEmail };
+    }
+
+    const user = await User.findOne(userQuery).select('+password');
 
     if (!user || user.role !== 'ADMIN') {
       return res.status(401).json({
@@ -297,6 +372,8 @@ const getMe = async (req, res, next) => {
         id: user._id,
         name: user.name,
         email: user.email,
+        phone: user.phone || '',
+        countryCode: user.countryCode || '+91',
         role: user.role,
         isVerified: user.isVerified,
         preferredLanguage: user.preferredLanguage || 'en',

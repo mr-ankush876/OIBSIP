@@ -22,19 +22,30 @@ app.use(
 
 // CORS configuration for cookies and client origin
 const allowedOrigins = [
-  process.env.FRONTEND_URL || 'http://localhost:5173',
+  process.env.FRONTEND_URL,
+  'http://localhost:5173',
   'http://localhost:3000',
   'http://127.0.0.1:5173',
-];
+].filter(Boolean);
 
 app.use(
   cors({
     origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(null, true); // Allow during development
+      // Allow requests with no origin (like mobile apps, curl, or server-to-server)
+      if (!origin) return callback(null, true);
+
+      // Check exact match in allowedOrigins
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
       }
+
+      // Check if origin matches any vercel.app deployment URL
+      if (origin.endsWith('.vercel.app') || origin.includes('localhost') || origin.includes('127.0.0.1')) {
+        return callback(null, true);
+      }
+
+      // Fallback: allow to avoid breaking dynamic cloud previews
+      return callback(null, true);
     },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],

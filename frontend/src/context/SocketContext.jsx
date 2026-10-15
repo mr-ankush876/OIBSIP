@@ -10,8 +10,18 @@ export const SocketProvider = ({ children }) => {
   const { token } = useAuth();
 
   useEffect(() => {
-    // In dev / production, connect to window.location.origin or proxy
-    const newSocket = io('/', {
+    const resolveSocketUrl = () => {
+      const socketUrl = import.meta.env.VITE_SOCKET_URL;
+      if (socketUrl) return socketUrl;
+      const apiUrl = import.meta.env.VITE_API_BASE_URL;
+      if (apiUrl) {
+        return apiUrl.replace(/\/api\/?$/, '');
+      }
+      return '/';
+    };
+
+    // In dev / production, connect to resolved backend URL or proxy
+    const newSocket = io(resolveSocketUrl(), {
       auth: { token },
       transports: ['websocket', 'polling'],
       reconnectionAttempts: 10,

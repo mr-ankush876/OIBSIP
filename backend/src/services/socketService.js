@@ -8,7 +8,19 @@ let io = null;
 const initSocket = (httpServer) => {
   io = new Server(httpServer, {
     cors: {
-      origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+      origin: (origin, callback) => {
+        if (
+          !origin ||
+          origin === process.env.FRONTEND_URL ||
+          origin.endsWith('.vercel.app') ||
+          origin.includes('localhost') ||
+          origin.includes('127.0.0.1')
+        ) {
+          callback(null, true);
+        } else {
+          callback(null, true);
+        }
+      },
       methods: ['GET', 'POST'],
       credentials: true,
     },
