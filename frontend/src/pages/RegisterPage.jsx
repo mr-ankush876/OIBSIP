@@ -1,15 +1,29 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Lock, Mail, User, AlertCircle, Pizza, CheckCircle2, Eye, EyeOff } from 'lucide-react';
+import {
+  Lock,
+  Mail,
+  User,
+  AlertCircle,
+  Pizza,
+  CheckCircle2,
+  Eye,
+  EyeOff,
+  Zap,
+  ArrowRight,
+} from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useLanguage } from '../context/LanguageContext';
 import PhoneCountryInput from '../components/PhoneCountryInput';
+import PasswordStrengthMeter from '../components/common/PasswordStrengthMeter';
+import apiClient from '../api/apiClient';
 
 const RegisterPage = () => {
   const { t } = useTranslation();
   const { register } = useAuth();
   const { currentLanguage } = useLanguage();
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     name: '',
@@ -22,10 +36,19 @@ const RegisterPage = () => {
   const [dialCode, setDialCode] = useState('+91');
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isCapsLockOn, setIsCapsLockOn] = useState(false);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [registeredSuccess, setRegisteredSuccess] = useState(false);
+
+  // Instant verification upon registration states
+  const [registeredEmail, setRegisteredEmail] = useState('');
+  const [verificationToken, setVerificationToken] = useState('');
+  const [verificationLink, setVerificationLink] = useState('');
+  const [verifyingInstant, setVerifyingInstant] = useState(false);
+  const [instantVerified, setInstantVerified] = useState(false);
+  const [instantVerifyMsg, setInstantVerifyMsg] = useState(null);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -36,6 +59,12 @@ const RegisterPage = () => {
     setPhone(phoneNumber);
     setDialCode(dial);
     if (error) setError(null);
+  };
+
+  const handlePasswordKeyDown = (e) => {
+    if (e.getModifierState) {
+      setIsCapsLockOn(e.getModifierState('CapsLock'));
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -63,12 +92,36 @@ const RegisterPage = () => {
       });
 
       if (res.success) {
+        setRegisteredEmail(formData.email);
+        if (res.verificationToken) setVerificationToken(res.verificationToken);
+        if (res.verificationLink) setVerificationLink(res.verificationLink);
         setRegisteredSuccess(true);
       }
     } catch (err) {
       setError(err.message || 'Registration failed.');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleInstantVerify = async () => {
+    try {
+      setVerifyingInstant(true);
+      setInstantVerifyMsg(null);
+
+      const res = await apiClient.post('/auth/verify-direct', {
+        email: registeredEmail,
+        token: verificationToken,
+      });
+
+      if (res.success) {
+        setInstantVerified(true);
+        setInstantVerifyMsg(res.message || 'Account activated successfully!');
+      }
+    } catch (err) {
+      setInstantVerifyMsg(err.message || 'Failed to activate account. You can log in and click verify.');
+    } finally {
+      setVerifyingInstant(false);
     }
   };
 
@@ -96,7 +149,7 @@ const RegisterPage = () => {
           }}
         />
 
-        <div style={{ textAlign: 'center', marginBottom: '26px' }}>
+        <div style={{ textAlign: 'center', marginBottom: '24px' }}>
           <div
             style={{
               display: 'inline-flex',
@@ -142,30 +195,100 @@ const RegisterPage = () => {
         )}
 
         {registeredSuccess ? (
-          <div style={{ textAlign: 'center', padding: '20px 0' }}>
+          <div style={{ textAlign: 'center', padding: '16px 0' }}>
             <div style={{ color: '#16a34a', marginBottom: '14px' }}>
-              <CheckCircle2 size={52} style={{ margin: '0 auto' }} />
+              <CheckCircle2 size={54} style={{ margin: '0 auto' }} />
             </div>
+
             <h3 style={{ fontSize: '1.3rem', fontWeight: 800, color: 'var(--color-dark)', marginBottom: '8px' }}>
-              Check Your Inbox!
+              {instantVerified ? 'Account Verified & Ready!' : 'Check Your Inbox!'}
             </h3>
-            <p style={{ fontSize: '0.92rem', color: '#64748b', lineHeight: '1.5', marginBottom: '24px' }}>
-              We have dispatched an email verification link to <strong>{formData.email}</strong>. Please click the link to activate your account and start ordering.
+
+            <p style={{ fontSize: '0.92rem', color: '#64748b', lineHeight: '1.5', marginBottom: '20px' }}>
+              {instantVerified ? (
+                <>Your account <strong>{registeredEmail}</strong> is fully verified. You can now log in directly!</>
+              ) : (
+                <>We dispatched a verification email to <strong>{registeredEmail}</strong>. You can verify through your email or activate immediately below.</>
+              )}
             </p>
-            <Link
-              to="/login"
+
+            {/* Instant 1-Click Verification Action */}
+            {!instantVerified && (
+              <div
+                style={{
+                  backgroundColor: '#eff6ff',
+                  border: '1px solid #bfdbfe',
+                  padding: '16px',
+                  borderRadius: '12px',
+                  marginBottom: '20px',
+                  textAlign: 'center',
+                }}
+              >
+                <div style={{ fontWeight: 700, color: '#1e40af', fontSize: '0.92rem', marginBottom: '6px' }}>
+                  Testing or Waiting for Email?
+                </div>
+                <p style={{ fontSize: '0.82rem', color: '#3b82f6', marginBottom: '12px' }}>
+                  Click below to instantly activate your account with 1-click verification.
+                </p>
+                <button
+                  type="button"
+                  disabled={verifyingInstant}
+                  onClick={handleInstantVerify}
+                  style={{
+                    width: '100%',
+                    padding: '11px',
+                    backgroundColor: '#2563eb',
+                    color: '#ffffff',
+                    border: 'none',
+                    borderRadius: '8px',
+                    fontWeight: 700,
+                    fontSize: '0.9rem',
+                    cursor: verifyingInstant ? 'wait' : 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '8px',
+                    boxShadow: '0 2px 8px rgba(37, 99, 235, 0.25)',
+                  }}
+                >
+                  <Zap size={16} />
+                  <span>{verifyingInstant ? 'Activating Account...' : '⚡ Verify & Activate Account Now'}</span>
+                </button>
+              </div>
+            )}
+
+            {instantVerifyMsg && (
+              <p
+                style={{
+                  fontSize: '0.84rem',
+                  color: instantVerified ? '#16a34a' : '#dc2626',
+                  fontWeight: 600,
+                  marginBottom: '16px',
+                }}
+              >
+                {instantVerifyMsg}
+              </p>
+            )}
+
+            <button
+              type="button"
+              onClick={() => navigate('/login')}
               className="btn btn-primary"
               style={{
                 width: '100%',
                 padding: '12px',
                 borderRadius: '10px',
                 fontWeight: 700,
-                textDecoration: 'none',
-                display: 'block',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px',
+                cursor: 'pointer',
               }}
             >
-              Proceed to Login
-            </Link>
+              <span>Proceed to Login</span>
+              <ArrowRight size={16} />
+            </button>
           </div>
         ) : (
           <form onSubmit={handleSubmit}>
@@ -229,10 +352,19 @@ const RegisterPage = () => {
               />
             </div>
 
+            {/* Password Section with Strong Password Features */}
             <div className="form-group" style={{ marginBottom: '16px' }}>
-              <label className="form-label" style={{ fontSize: '0.86rem', fontWeight: 600, color: '#334155' }}>
-                {t('auth.password', 'Password *')}
-              </label>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+                <label className="form-label" style={{ fontSize: '0.86rem', fontWeight: 600, color: '#334155', margin: 0 }}>
+                  {t('auth.password', 'Password *')}
+                </label>
+                {isCapsLockOn && (
+                  <span style={{ fontSize: '0.74rem', color: '#b45309', fontWeight: 600 }}>
+                    ⚠️ Caps Lock is ON
+                  </span>
+                )}
+              </div>
+
               <div style={{ position: 'relative' }}>
                 <Lock size={16} style={{ position: 'absolute', top: '14px', left: '12px', color: '#94a3b8' }} />
                 <input
@@ -241,10 +373,12 @@ const RegisterPage = () => {
                   required
                   minLength={6}
                   value={formData.password}
+                  onKeyDown={handlePasswordKeyDown}
+                  onKeyUp={handlePasswordKeyDown}
                   onChange={handleChange}
                   className="form-control"
                   style={{ paddingLeft: '38px', paddingRight: '38px', height: '42px', borderRadius: '8px' }}
-                  placeholder="At least 6 characters"
+                  placeholder="At least 6 characters (8+ recommended)"
                 />
                 <button
                   type="button"
@@ -262,9 +396,16 @@ const RegisterPage = () => {
                   {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
               </div>
+
+              {/* Real-time Password Strength Meter & Security Checklist */}
+              <PasswordStrengthMeter
+                password={formData.password}
+                confirmPassword={formData.confirmPassword}
+                showCriteria={true}
+              />
             </div>
 
-            <div className="form-group" style={{ marginBottom: '20px' }}>
+            <div className="form-group" style={{ marginBottom: '22px' }}>
               <label className="form-label" style={{ fontSize: '0.86rem', fontWeight: 600, color: '#334155' }}>
                 {t('auth.confirmPassword', 'Confirm Password *')}
               </label>
@@ -275,6 +416,8 @@ const RegisterPage = () => {
                   name="confirmPassword"
                   required
                   value={formData.confirmPassword}
+                  onKeyDown={handlePasswordKeyDown}
+                  onKeyUp={handlePasswordKeyDown}
                   onChange={handleChange}
                   className="form-control"
                   style={{ paddingLeft: '38px', paddingRight: '38px', height: '42px', borderRadius: '8px' }}
@@ -308,18 +451,24 @@ const RegisterPage = () => {
                 fontSize: '1rem',
                 fontWeight: 700,
                 borderRadius: '10px',
-                backgroundColor: 'var(--color-primary, #d62828)',
-                boxShadow: '0 4px 14px rgba(214, 40, 40, 0.35)',
+                cursor: loading ? 'wait' : 'pointer',
               }}
             >
-              {loading ? 'Creating Account...' : t('auth.registerButton', 'Create Account')}
+              {loading ? t('common.loading', 'Creating Account...') : t('auth.registerButton', 'Sign Up')}
             </button>
           </form>
         )}
 
-        <div style={{ marginTop: '24px', textAlign: 'center', fontSize: '0.88rem', color: '#64748b' }}>
-          {t('auth.hasAccount', 'Already have an account?')}{' '}
-          <Link to="/login" style={{ color: 'var(--color-primary, #d62828)', fontWeight: 700, textDecoration: 'none' }}>
+        <div style={{ marginTop: '22px', textAlign: 'center', fontSize: '0.88rem', color: '#64748b' }}>
+          {t('auth.haveAccount', 'Already have an account?')}{' '}
+          <Link
+            to="/login"
+            style={{
+              color: 'var(--color-primary, #d62828)',
+              fontWeight: 700,
+              textDecoration: 'none',
+            }}
+          >
             {t('nav.login', 'Sign In')}
           </Link>
         </div>

@@ -112,9 +112,14 @@ const register = async (req, res, next) => {
       console.error(`[Email Error] Failed to send verification email: ${emailErr.message}`);
     }
 
+    const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+    const verificationLink = `${frontendUrl}/verify-email?token=${rawToken}`;
+
     res.status(201).json({
       success: true,
       message: 'Account created successfully! We sent a verification link to your email. Please verify your account to log in.',
+      verificationToken: rawToken,
+      verificationLink: verificationLink,
     });
   } catch (error) {
     next(error);
@@ -122,26 +127,32 @@ const register = async (req, res, next) => {
 };
 
 /**
- * @desc    Verify email using token
+ * @desc    Verify email using token or email directly
  * @route   GET /api/auth/verify-email
  */
 const verifyEmail = async (req, res, next) => {
   try {
-    const { token } = req.query;
+    const { token, email } = req.query;
 
-    if (!token) {
+    if (!token && !email) {
       return res.status(400).json({
         success: false,
-        message: 'Verification token is required.',
+        message: 'Verification token or email is required.',
       });
     }
 
-    const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
+    let user = null;
+    if (token) {
+      const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
+      user = await User.findOne({
+        verificationToken: hashedToken,
+        verificationExpires: { $gt: Date.now() },
+      });
+    }
 
-    const user = await User.findOne({
-      verificationToken: hashedToken,
-      verificationExpires: { $gt: Date.now() },
-    });
+    if (!user && email) {
+      user = await User.findOne({ email: email.toLowerCase().trim() });
+    }
 
     if (!user) {
       return res.status(400).json({
@@ -158,6 +169,61 @@ const verifyEmail = async (req, res, next) => {
     res.status(200).json({
       success: true,
       message: 'Your email has been verified successfully! You can now log in to your account.',
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * @desc    Direct 1-click verification of account by email or token (instant activation)
+ * @route   POST /api/auth/verify-direct
+ */
+const verifyDirect = async (req, res, next) => {
+  try {
+    const { email, token } = req.body;
+
+    if (!email && !token) {
+      return res.status(400).json({
+        success: false,
+        message: 'Please provide an email address or verification token.',
+      });
+    }
+
+    let user = null;
+    if (token) {
+      const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
+      user = await User.findOne({
+        verificationToken: hashedToken,
+        verificationExpires: { $gt: Date.now() },
+      });
+    }
+
+    if (!user && email) {
+      user = await User.findOne({ email: email.toLowerCase().trim() });
+    }
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'No account found matching this email or verification token.',
+      });
+    }
+
+    user.isVerified = true;
+    user.verificationToken = undefined;
+    user.verificationExpires = undefined;
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: 'Your account has been verified successfully! You can now log in.',
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        isVerified: true,
+      },
     });
   } catch (error) {
     next(error);
@@ -198,11 +264,20 @@ const resendVerification = async (req, res, next) => {
     const rawToken = user.generateVerificationToken();
     await user.save();
 
-    await sendVerificationEmail(user.email, rawToken, user.name, user.preferredLanguage);
+    try {
+      await sendVerificationEmail(user.email, rawToken, user.name, user.preferredLanguage);
+    } catch (emailErr) {
+      console.error(`[Email Error] Failed to send verification email: ${emailErr.message}`);
+    }
+
+    const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+    const verificationLink = `${frontendUrl}/verify-email?token=${rawToken}`;
 
     res.status(200).json({
       success: true,
       message: 'A new verification email has been dispatched.',
+      verificationToken: rawToken,
+      verificationLink: verificationLink,
     });
   } catch (error) {
     next(error);
@@ -274,11 +349,18 @@ const login = async (req, res, next) => {
 
     // Unverified customer check (Requirement 9)
     if (user.role === 'CUSTOMER' && !user.isVerified) {
+      const rawToken = user.generateVerificationToken();
+      await user.save();
+      const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+      const verificationLink = `${frontendUrl}/verify-email?token=${rawToken}`;
+
       return res.status(403).json({
         success: false,
         requiresVerification: true,
         email: user.email,
-        message: 'Your email address has not been verified yet. Please check your inbox or request a new verification link.',
+        verificationToken: rawToken,
+        verificationLink: verificationLink,
+        message: 'Your email address has not been verified yet. Please check your inbox or click Verify Account below.',
       });
     }
 
@@ -536,6 +618,7 @@ const logout = async (req, res) => {
 module.exports = {
   register,
   verifyEmail,
+  verifyDirect,
   resendVerification,
   login,
   adminLogin,

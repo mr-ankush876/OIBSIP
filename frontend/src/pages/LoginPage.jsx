@@ -9,10 +9,16 @@ import {
   Pizza,
   Eye,
   EyeOff,
-  ArrowRight
+  ArrowRight,
+  CheckCircle2,
+  ShieldCheck,
+  Zap,
+  RefreshCw,
+  ExternalLink,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import PhoneCountryInput from '../components/PhoneCountryInput';
+import PasswordStrengthMeter from '../components/common/PasswordStrengthMeter';
 import apiClient from '../api/apiClient';
 
 const LoginPage = () => {
@@ -21,7 +27,7 @@ const LoginPage = () => {
   const navigate = useNavigate();
 
   // Mode: 'phone' or 'email'
-  const [loginMode, setLoginMode] = useState('phone');
+  const [loginMode, setLoginMode] = useState('email');
 
   // Phone states
   const [phoneNumber, setPhoneNumber] = useState(() => localStorage.getItem('slicecraft_saved_phone') || '');
@@ -34,12 +40,22 @@ const LoginPage = () => {
   // Password & UI states
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [isCapsLockOn, setIsCapsLockOn] = useState(false);
+  const [showPasswordGuide, setShowPasswordGuide] = useState(false);
   const [rememberMe, setRememberMe] = useState(true);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  // Email verification states
   const [requiresVerification, setRequiresVerification] = useState(false);
-  const [resendStatus, setResendStatus] = useState(null);
+  const [unverifiedEmail, setUnverifiedEmail] = useState('');
+  const [verificationToken, setVerificationToken] = useState('');
+  const [verificationLink, setVerificationLink] = useState('');
+  const [verifyingDirect, setVerifyingDirect] = useState(false);
+  const [verificationSuccess, setVerificationSuccess] = useState(false);
+  const [verificationMsg, setVerificationMsg] = useState(null);
   const [resending, setResending] = useState(false);
+  const [resendStatus, setResendStatus] = useState(null);
 
   // Sync remembered credentials on change
   useEffect(() => {
@@ -60,10 +76,17 @@ const LoginPage = () => {
     if (error) setError(null);
   };
 
+  const handlePasswordKeyDown = (e) => {
+    if (e.getModifierState) {
+      setIsCapsLockOn(e.getModifierState('CapsLock'));
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
     setResendStatus(null);
+    setVerificationMsg(null);
     setRequiresVerification(false);
 
     // Basic frontend validations
@@ -108,21 +131,62 @@ const LoginPage = () => {
         navigate('/');
       }
     } catch (err) {
-      setError(err.message || 'Authentication failed. Please check your credentials.');
-      if (err.message?.toLowerCase().includes('verify') || err.message?.toLowerCase().includes('verification')) {
+      const isUnverified =
+        err.data?.requiresVerification ||
+        err.message?.toLowerCase().includes('verify') ||
+        err.message?.toLowerCase().includes('verification');
+
+      if (isUnverified) {
         setRequiresVerification(true);
+        const resolvedEmail = err.data?.email || (loginMode === 'email' ? email.trim() : '');
+        setUnverifiedEmail(resolvedEmail);
+        if (err.data?.verificationToken) setVerificationToken(err.data.verificationToken);
+        if (err.data?.verificationLink) setVerificationLink(err.data.verificationLink);
+        setError(null); // Keep card clean and non-duplicated
+      } else {
+        setError(err.message || 'Authentication failed. Please check your credentials.');
       }
     } finally {
       setLoading(false);
     }
   };
 
+  // Instant 1-Click Verification Handler
+  const handleDirectVerify = async () => {
+    try {
+      setVerifyingDirect(true);
+      setVerificationMsg(null);
+      const targetEmail = unverifiedEmail || email || (loginMode === 'email' ? email.trim() : '');
+
+      const res = await apiClient.post('/auth/verify-direct', {
+        email: targetEmail,
+        token: verificationToken,
+      });
+
+      if (res.success) {
+        setVerificationSuccess(true);
+        setRequiresVerification(false);
+        setError(null);
+        setVerificationMsg(res.message || 'Account verified successfully! You can now log in.');
+      }
+    } catch (err) {
+      setVerificationMsg(err.message || 'Failed to verify account. Please try requesting a new link.');
+    } finally {
+      setVerifyingDirect(false);
+    }
+  };
+
+  // Resend Verification Email Handler
   const handleResendVerification = async () => {
     try {
       setResending(true);
       setResendStatus('Sending verification link...');
-      const targetEmail = email || 'customer@slicecraftpizza.com';
+      const targetEmail = unverifiedEmail || email || 'customer@slicecraftpizza.com';
       const res = await apiClient.post('/auth/resend-verification', { email: targetEmail });
+
+      if (res.verificationToken) setVerificationToken(res.verificationToken);
+      if (res.verificationLink) setVerificationLink(res.verificationLink);
+
       setResendStatus(res.message || 'Verification link dispatched successfully!');
     } catch (err) {
       setResendStatus(err.message || 'Failed to resend verification link.');
@@ -130,7 +194,6 @@ const LoginPage = () => {
       setResending(false);
     }
   };
-
 
   return (
     <div
@@ -155,7 +218,7 @@ const LoginPage = () => {
           overflow: 'hidden',
         }}
       >
-        {/* Subtle decorative top bar */}
+        {/* Decorative top bar */}
         <div
           style={{
             position: 'absolute',
@@ -168,7 +231,7 @@ const LoginPage = () => {
         />
 
         {/* Header Section */}
-        <div style={{ textAlign: 'center', marginBottom: '26px' }}>
+        <div style={{ textAlign: 'center', marginBottom: '24px' }}>
           <div
             style={{
               display: 'inline-flex',
@@ -197,18 +260,18 @@ const LoginPage = () => {
             {t('auth.loginTitle', 'Welcome Back')}
           </h1>
           <p style={{ fontSize: '0.88rem', color: '#64748b' }}>
-            {t('auth.loginSubtitle', 'Sign in to track orders, save favorites & enjoy hot pizza')}
+            {t('auth.loginSubtitle', 'Log in to track orders, save favorites, and enjoy hot pizza')}
           </p>
         </div>
 
-        {/* Advance Dual-Mode Interactive Tabs */}
+        {/* Dual-Mode Interactive Tabs */}
         <div
           style={{
             display: 'flex',
             backgroundColor: '#f1f5f9',
             borderRadius: '10px',
             padding: '4px',
-            marginBottom: '22px',
+            marginBottom: '20px',
           }}
         >
           <button
@@ -268,8 +331,35 @@ const LoginPage = () => {
           </button>
         </div>
 
-        {/* Error Notification Banner */}
-        {error && (
+        {/* Verification Success Celebration Banner */}
+        {verificationSuccess && (
+          <div
+            style={{
+              backgroundColor: '#ecfdf5',
+              border: '1px solid #a7f3d0',
+              padding: '14px',
+              borderRadius: '12px',
+              marginBottom: '18px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '12px',
+              animation: 'fadeIn 0.3s ease',
+            }}
+          >
+            <CheckCircle2 size={24} style={{ color: '#059669', flexShrink: 0 }} />
+            <div>
+              <div style={{ fontWeight: 700, color: '#065f46', fontSize: '0.92rem' }}>
+                Account Verified Successfully!
+              </div>
+              <div style={{ fontSize: '0.82rem', color: '#047857', marginTop: '2px' }}>
+                {verificationMsg || 'You can now sign in with your email and password.'}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Generic Error Banner (Only shown if NOT an unverified email notice) */}
+        {error && !requiresVerification && (
           <div
             style={{
               backgroundColor: '#fee2e2',
@@ -290,46 +380,132 @@ const LoginPage = () => {
           </div>
         )}
 
-        {/* Unverified Account Banner */}
+        {/* Unified Email Verification Required Card */}
         {requiresVerification && (
           <div
             style={{
               backgroundColor: '#eff6ff',
               border: '1px solid #bfdbfe',
-              padding: '14px',
-              borderRadius: '10px',
-              marginBottom: '18px',
-              fontSize: '0.85rem',
+              padding: '16px',
+              borderRadius: '12px',
+              marginBottom: '20px',
               textAlign: 'center',
+              animation: 'fadeIn 0.3s ease',
             }}
           >
-            <p style={{ color: '#1e40af', marginBottom: '8px', fontWeight: 500 }}>
-              Your account email requires verification before logging in.
-            </p>
-            <button
-              type="button"
-              disabled={resending}
-              onClick={handleResendVerification}
+            <div
               style={{
-                background: 'none',
-                border: 'none',
-                color: 'var(--color-primary, #d62828)',
-                fontWeight: 700,
-                textDecoration: 'underline',
-                cursor: 'pointer',
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '38px',
+                height: '38px',
+                borderRadius: '50%',
+                backgroundColor: '#dbeafe',
+                color: '#2563eb',
+                marginBottom: '8px',
               }}
             >
-              {resending ? 'Sending email...' : t('auth.resendVerification', 'Resend Verification Email')}
+              <Mail size={20} />
+            </div>
+
+            <h3 style={{ fontSize: '1rem', fontWeight: 700, color: '#1e3a8a', marginBottom: '4px' }}>
+              Email Verification Required
+            </h3>
+
+            <p style={{ fontSize: '0.84rem', color: '#3b82f6', marginBottom: '12px', lineHeight: 1.4 }}>
+              Account <strong>{unverifiedEmail || email || 'associated with this login'}</strong> is awaiting verification.
+            </p>
+
+            {/* Action 1: Instant 1-Click Verification */}
+            <button
+              type="button"
+              disabled={verifyingDirect}
+              onClick={handleDirectVerify}
+              style={{
+                width: '100%',
+                padding: '10px 14px',
+                backgroundColor: '#2563eb',
+                color: '#ffffff',
+                border: 'none',
+                borderRadius: '8px',
+                fontWeight: 700,
+                fontSize: '0.88rem',
+                cursor: verifyingDirect ? 'wait' : 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px',
+                marginBottom: '8px',
+                boxShadow: '0 2px 8px rgba(37, 99, 235, 0.25)',
+                transition: 'all 0.2s ease',
+              }}
+            >
+              <Zap size={16} />
+              <span>{verifyingDirect ? 'Verifying Account...' : '⚡ Verify Account Now (1-Click)'}</span>
             </button>
+
+            {/* Action 2: Resend Verification Email (Typo Fixed!) */}
+            <div style={{ display: 'flex', justifyContent: 'center', gap: '12px', alignItems: 'center' }}>
+              <button
+                type="button"
+                disabled={resending}
+                onClick={handleResendVerification}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: 'var(--color-primary, #d62828)',
+                  fontWeight: 600,
+                  fontSize: '0.82rem',
+                  textDecoration: 'underline',
+                  cursor: resending ? 'wait' : 'pointer',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '4px',
+                }}
+              >
+                <RefreshCw size={13} className={resending ? 'spin' : ''} />
+                <span>{resending ? 'Sending Email...' : 'Resend Verification Email'}</span>
+              </button>
+
+              {verificationLink && (
+                <a
+                  href={verificationLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    color: '#2563eb',
+                    fontWeight: 600,
+                    fontSize: '0.82rem',
+                    textDecoration: 'underline',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '4px',
+                  }}
+                >
+                  <ExternalLink size={13} />
+                  <span>Open Link</span>
+                </a>
+              )}
+            </div>
+
             {resendStatus && (
-              <p style={{ marginTop: '8px', color: '#16a34a', fontWeight: 600 }}>{resendStatus}</p>
+              <p style={{ marginTop: '8px', color: '#16a34a', fontWeight: 600, fontSize: '0.8rem' }}>
+                {resendStatus}
+              </p>
+            )}
+
+            {verificationMsg && !verificationSuccess && (
+              <p style={{ marginTop: '8px', color: '#dc2626', fontWeight: 600, fontSize: '0.8rem' }}>
+                {verificationMsg}
+              </p>
             )}
           </div>
         )}
 
         {/* Main Authentication Form */}
         <form onSubmit={handleSubmit}>
-          {/* TAB 1: Mobile Phone Number Input with Fixed Country Code */}
+          {/* TAB 1: Mobile Phone Number Input */}
           {loginMode === 'phone' ? (
             <div className="form-group" style={{ marginBottom: '18px' }}>
               <label
@@ -398,7 +574,7 @@ const LoginPage = () => {
             </div>
           )}
 
-          {/* Password Input with Show/Hide Eye Toggle */}
+          {/* Password Section with Eye Toggle, Caps Lock Alert, and Strength Assistant */}
           <div className="form-group" style={{ marginBottom: '16px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
               <label className="form-label" style={{ fontSize: '0.88rem', fontWeight: 600, color: '#334155', margin: 0 }}>
@@ -418,6 +594,8 @@ const LoginPage = () => {
                 type={showPassword ? 'text' : 'password'}
                 required
                 value={password}
+                onKeyDown={handlePasswordKeyDown}
+                onKeyUp={handlePasswordKeyDown}
                 onChange={(e) => {
                   setPassword(e.target.value);
                   if (error) setError(null);
@@ -428,7 +606,7 @@ const LoginPage = () => {
                   paddingRight: '40px',
                   height: '44px',
                   borderRadius: '8px',
-                  border: '1px solid #cbd5e1',
+                  border: isCapsLockOn ? '1px solid #f59e0b' : '1px solid #cbd5e1',
                   fontSize: '0.94rem',
                 }}
                 placeholder="Enter your password"
@@ -452,6 +630,54 @@ const LoginPage = () => {
                 {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
             </div>
+
+            {/* Caps Lock Warning Badge */}
+            {isCapsLockOn && (
+              <div
+                style={{
+                  marginTop: '6px',
+                  fontSize: '0.75rem',
+                  fontWeight: 600,
+                  color: '#b45309',
+                  backgroundColor: '#fef3c7',
+                  padding: '4px 10px',
+                  borderRadius: '6px',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '5px',
+                  animation: 'fadeIn 0.2s ease',
+                }}
+              >
+                <span>⚠️ Caps Lock is active</span>
+              </div>
+            )}
+
+            {/* Optional Password Security Requirements Assistant */}
+            <div style={{ marginTop: '6px', display: 'flex', justifyContent: 'flex-end' }}>
+              <button
+                type="button"
+                onClick={() => setShowPasswordGuide(!showPasswordGuide)}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  fontSize: '0.74rem',
+                  color: '#64748b',
+                  cursor: 'pointer',
+                  textDecoration: 'underline',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '4px',
+                  padding: 0,
+                }}
+              >
+                <ShieldCheck size={12} color="#64748b" />
+                <span>{showPasswordGuide ? 'Hide password strength helper' : 'Password security helper'}</span>
+              </button>
+            </div>
+
+            {showPasswordGuide && (
+              <PasswordStrengthMeter password={password} showCriteria={true} />
+            )}
           </div>
 
           {/* Remember Me Checkbox */}
@@ -509,7 +735,6 @@ const LoginPage = () => {
             )}
           </button>
         </form>
-
 
         {/* Footer Navigation Link */}
         <div style={{ marginTop: '22px', textAlign: 'center', fontSize: '0.88rem', color: '#64748b' }}>

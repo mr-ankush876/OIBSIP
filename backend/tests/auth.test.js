@@ -92,6 +92,49 @@ describe('Authentication & Email Verification API', () => {
 
     expect(res.statusCode).toBe(403);
     expect(res.body.requiresVerification).toBe(true);
+    expect(res.body.verificationToken).toBeTruthy();
+    expect(res.body.verificationLink).toContain('/verify-email?token=');
+  });
+
+  test('POST /api/auth/verify-direct - Successfully activates account via direct 1-click verification', async () => {
+    const user = new User({
+      name: 'Direct User',
+      email: 'direct@example.com',
+      password: 'Password123!',
+      role: 'CUSTOMER',
+      isVerified: false,
+    });
+    await user.save();
+
+    const res = await request(app)
+      .post('/api/auth/verify-direct')
+      .send({ email: 'direct@example.com' });
+
+    expect(res.statusCode).toBe(200);
+    expect(res.body.success).toBe(true);
+
+    const updated = await User.findOne({ email: 'direct@example.com' });
+    expect(updated.isVerified).toBe(true);
+  });
+
+  test('POST /api/auth/resend-verification - Dispatches new token and returns verification link', async () => {
+    const user = new User({
+      name: 'Resend User',
+      email: 'resend@example.com',
+      password: 'Password123!',
+      role: 'CUSTOMER',
+      isVerified: false,
+    });
+    await user.save();
+
+    const res = await request(app)
+      .post('/api/auth/resend-verification')
+      .send({ email: 'resend@example.com' });
+
+    expect(res.statusCode).toBe(200);
+    expect(res.body.success).toBe(true);
+    expect(res.body.verificationToken).toBeTruthy();
+    expect(res.body.verificationLink).toContain('/verify-email?token=');
   });
 
   test('POST /api/auth/login - Successfully logs in verified user and returns JWT token', async () => {

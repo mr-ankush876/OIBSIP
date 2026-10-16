@@ -117,3 +117,44 @@ describe('Worldwide Country Codes & Phone Selector Rules', () => {
   });
 });
 
+import { calculatePasswordStrength } from '../components/common/PasswordStrengthMeter';
+
+describe('Password Strength Analyzer & Validation Rules', () => {
+  it('returns zero score and Too Weak for empty password', () => {
+    const res = calculatePasswordStrength('');
+    expect(res.strength.score).toBe(0);
+    expect(res.strength.label).toBe('Too Weak');
+    expect(res.metCount).toBe(0);
+  });
+
+  it('classifies simple short passwords as Weak', () => {
+    const res = calculatePasswordStrength('abc');
+    expect(res.strength.label).toBe('Weak');
+    expect(res.strength.score).toBe(1);
+    expect(res.length).toBe(false);
+  });
+
+  it('classifies medium passwords meeting 3 criteria as Fair', () => {
+    const res = calculatePasswordStrength('password123'); // length, lower, number
+    expect(res.strength.label).toBe('Fair');
+    expect(res.strength.score).toBe(2);
+  });
+
+  it('classifies passwords meeting 4 criteria as Good', () => {
+    const res = calculatePasswordStrength('Password123'); // length, upper, lower, number
+    expect(res.strength.label).toBe('Good');
+    expect(res.strength.score).toBe(3);
+  });
+
+  it('classifies complex passwords meeting all 5 criteria as Strong', () => {
+    const res = calculatePasswordStrength('Ankush143@'); // length, upper, lower, number, special
+    expect(res.strength.label).toBe('Strong');
+    expect(res.strength.score).toBe(4);
+    expect(res.length).toBe(true);
+    expect(res.hasUpper).toBe(true);
+    expect(res.hasLower).toBe(true);
+    expect(res.hasNumber).toBe(true);
+    expect(res.hasSpecial).toBe(true);
+  });
+});
+

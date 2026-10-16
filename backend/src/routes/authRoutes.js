@@ -3,6 +3,7 @@ const router = express.Router();
 const {
   register,
   verifyEmail,
+  verifyDirect,
   resendVerification,
   login,
   adminLogin,
@@ -17,6 +18,7 @@ const { authLimiter, passwordResetLimiter } = require('../middleware/rateLimiter
 
 router.post('/register', authLimiter, register);
 router.get('/verify-email', verifyEmail);
+router.post('/verify-direct', authLimiter, verifyDirect);
 router.post('/resend-verification', authLimiter, resendVerification);
 router.post('/login', authLimiter, login);
 router.post('/admin-login', authLimiter, adminLogin);

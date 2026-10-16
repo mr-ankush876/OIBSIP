@@ -1,28 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
-import { CheckCircle2, XCircle, ArrowRight, Mail } from 'lucide-react';
+import { CheckCircle2, XCircle, ArrowRight, Mail, Zap, RefreshCw } from 'lucide-react';
 import apiClient from '../api/apiClient';
 
 const VerifyEmailPage = () => {
   const [searchParams] = useSearchParams();
   const token = searchParams.get('token');
+  const emailParam = searchParams.get('email');
 
   const [status, setStatus] = useState('verifying'); // 'verifying', 'success', 'error'
   const [message, setMessage] = useState('');
-  const [resendEmail, setResendEmail] = useState('');
+  const [resendEmail, setResendEmail] = useState(emailParam || '');
   const [resendMessage, setResendMessage] = useState('');
   const [resending, setResending] = useState(false);
+  const [directActivating, setDirectActivating] = useState(false);
 
   useEffect(() => {
     const performVerification = async () => {
-      if (!token) {
+      if (!token && !emailParam) {
         setStatus('error');
-        setMessage('No verification token provided in the URL.');
+        setMessage('No verification token or email provided in the URL.');
         return;
       }
 
       try {
-        const res = await apiClient.get(`/auth/verify-email?token=${token}`);
+        const query = token ? `token=${token}` : `email=${encodeURIComponent(emailParam)}`;
+        const res = await apiClient.get(`/auth/verify-email?${query}`);
         if (res.success) {
           setStatus('success');
           setMessage(res.message || 'Your email has been verified successfully!');
@@ -34,7 +37,7 @@ const VerifyEmailPage = () => {
     };
 
     performVerification();
-  }, [token]);
+  }, [token, emailParam]);
 
   const handleResend = async (e) => {
     e.preventDefault();
@@ -53,9 +56,27 @@ const VerifyEmailPage = () => {
     }
   };
 
+  const handleDirectActivate = async () => {
+    if (!resendEmail) return;
+    setDirectActivating(true);
+    setResendMessage('');
+
+    try {
+      const res = await apiClient.post('/auth/verify-direct', { email: resendEmail });
+      if (res.success) {
+        setStatus('success');
+        setMessage(res.message || 'Account activated successfully!');
+      }
+    } catch (err) {
+      setResendMessage(err.message || 'Failed to activate account.');
+    } finally {
+      setDirectActivating(false);
+    }
+  };
+
   return (
     <div className="container" style={{ padding: '80px 20px', maxWidth: '480px', textAlign: 'center' }}>
-      <div className="card" style={{ padding: '40px 28px' }}>
+      <div className="card" style={{ padding: '40px 28px', borderRadius: '18px' }}>
         {status === 'verifying' && (
           <div>
             <div className="spinner"></div>
@@ -79,7 +100,7 @@ const VerifyEmailPage = () => {
             <p style={{ color: 'var(--color-muted)', lineHeight: '1.5', marginBottom: '28px' }}>
               {message}
             </p>
-            <Link to="/login" className="btn btn-primary" style={{ width: '100%', padding: '12px' }}>
+            <Link to="/login" className="btn btn-primary" style={{ width: '100%', padding: '12px', borderRadius: '10px' }}>
               Proceed to Login <ArrowRight size={16} />
             </Link>
           </div>
@@ -87,20 +108,20 @@ const VerifyEmailPage = () => {
 
         {status === 'error' && (
           <div>
-            <div style={{ color: 'var(--color-danger)', marginBottom: '16px' }}>
+            <div style={{ color: 'var(--color-danger, #dc2626)', marginBottom: '16px' }}>
               <XCircle size={56} style={{ margin: '0 auto' }} />
             </div>
             <h2 style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--color-dark)', marginBottom: '8px' }}>
-              Verification Failed
+              Verification Needed
             </h2>
             <p style={{ color: 'var(--color-muted)', lineHeight: '1.5', marginBottom: '24px' }}>
               {message}
             </p>
 
-            {/* Resend Verification Form */}
-            <div style={{ backgroundColor: '#f8fafc', padding: '18px', borderRadius: 'var(--radius-md)', textAlign: 'left' }}>
+            {/* Direct Instant Activation & Resend Form */}
+            <div style={{ backgroundColor: '#f8fafc', padding: '18px', borderRadius: '12px', textAlign: 'left', border: '1px solid #e2e8f0' }}>
               <h4 style={{ fontSize: '0.92rem', fontWeight: 700, marginBottom: '8px', color: 'var(--color-dark)' }}>
-                Request New Verification Link
+                Activate Account Directly or Request Link
               </h4>
               <form onSubmit={handleResend}>
                 <div style={{ position: 'relative', marginBottom: '10px' }}>
@@ -108,31 +129,67 @@ const VerifyEmailPage = () => {
                   <input
                     type="email"
                     required
-                    placeholder="Enter your registered email"
+                    placeholder="Enter registered email address"
                     value={resendEmail}
                     onChange={(e) => setResendEmail(e.target.value)}
                     className="form-control"
-                    style={{ paddingLeft: '36px', fontSize: '0.85rem' }}
+                    style={{ paddingLeft: '36px', fontSize: '0.88rem', height: '40px', borderRadius: '8px' }}
                   />
                 </div>
-                <button
-                  type="submit"
-                  disabled={resending}
-                  className="btn btn-primary"
-                  style={{ width: '100%', padding: '9px', fontSize: '0.85rem' }}
-                >
-                  {resending ? 'Sending...' : 'Resend Email'}
-                </button>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  <button
+                    type="button"
+                    disabled={directActivating || !resendEmail}
+                    onClick={handleDirectActivate}
+                    className="btn btn-primary"
+                    style={{
+                      width: '100%',
+                      padding: '10px',
+                      fontSize: '0.88rem',
+                      fontWeight: 700,
+                      borderRadius: '8px',
+                      backgroundColor: '#2563eb',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '6px',
+                    }}
+                  >
+                    <Zap size={15} />
+                    <span>{directActivating ? 'Activating...' : '⚡ Instant Verify & Activate Now'}</span>
+                  </button>
+
+                  <button
+                    type="submit"
+                    disabled={resending || !resendEmail}
+                    className="btn btn-secondary"
+                    style={{
+                      width: '100%',
+                      padding: '9px',
+                      fontSize: '0.85rem',
+                      borderRadius: '8px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '6px',
+                    }}
+                  >
+                    <RefreshCw size={14} />
+                    <span>{resending ? 'Sending...' : 'Resend Verification Email'}</span>
+                  </button>
+                </div>
               </form>
+
               {resendMessage && (
-                <p style={{ fontSize: '0.8rem', color: '#16a34a', marginTop: '8px', fontWeight: 600 }}>
+                <p style={{ fontSize: '0.82rem', color: '#16a34a', marginTop: '10px', fontWeight: 600 }}>
                   {resendMessage}
                 </p>
               )}
             </div>
 
             <div style={{ marginTop: '20px' }}>
-              <Link to="/login" style={{ fontSize: '0.85rem', color: 'var(--color-primary)', fontWeight: 600 }}>
+              <Link to="/login" style={{ fontSize: '0.88rem', color: 'var(--color-primary, #d62828)', fontWeight: 600 }}>
                 Return to Login
               </Link>
             </div>
