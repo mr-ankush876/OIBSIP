@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useSearchParams, useNavigate, Link } from 'react-router-dom';
 import { Lock, CheckCircle2, AlertCircle, Pizza, Eye, EyeOff } from 'lucide-react';
 import apiClient from '../api/apiClient';
-import PasswordStrengthMeter from '../components/common/PasswordStrengthMeter';
 
 const ResetPasswordPage = () => {
   const [searchParams] = useSearchParams();
@@ -41,6 +40,17 @@ const ResetPasswordPage = () => {
 
     if (password.length < 6) {
       setError('Password must be at least 6 characters long.');
+      return;
+    }
+
+    // Strong password function validation (runs behind the scenes without UI clutter)
+    const hasUpper = /[A-Z]/.test(password);
+    const hasLower = /[a-z]/.test(password);
+    const hasNumber = /[0-9]/.test(password);
+    const hasSpecial = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~`]/.test(password);
+
+    if (!hasUpper || !hasLower || !hasNumber || !hasSpecial) {
+      setError('Password must be strong (must include uppercase, lowercase, number, and a special character).');
       return;
     }
 
@@ -150,7 +160,7 @@ const ResetPasswordPage = () => {
                   onChange={(e) => setPassword(e.target.value)}
                   className="form-control"
                   style={{ paddingLeft: '38px', paddingRight: '38px', height: '42px', borderRadius: '8px' }}
-                  placeholder="At least 6 characters"
+                  placeholder="Enter new password"
                 />
                 <button
                   type="button"
@@ -168,12 +178,6 @@ const ResetPasswordPage = () => {
                   {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
               </div>
-
-              <PasswordStrengthMeter
-                password={password}
-                confirmPassword={confirmPassword}
-                showCriteria={true}
-              />
             </div>
 
             <div className="form-group" style={{ marginBottom: '22px' }}>

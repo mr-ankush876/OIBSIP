@@ -11,14 +11,12 @@ import {
   EyeOff,
   ArrowRight,
   CheckCircle2,
-  ShieldCheck,
   Zap,
   RefreshCw,
   ExternalLink,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import PhoneCountryInput from '../components/PhoneCountryInput';
-import PasswordStrengthMeter from '../components/common/PasswordStrengthMeter';
 import apiClient from '../api/apiClient';
 
 const LoginPage = () => {
@@ -41,7 +39,6 @@ const LoginPage = () => {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isCapsLockOn, setIsCapsLockOn] = useState(false);
-  const [showPasswordGuide, setShowPasswordGuide] = useState(false);
   const [rememberMe, setRememberMe] = useState(true);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -650,33 +647,6 @@ const LoginPage = () => {
               >
                 <span>⚠️ Caps Lock is active</span>
               </div>
-            )}
-
-            {/* Optional Password Security Requirements Assistant */}
-            <div style={{ marginTop: '6px', display: 'flex', justifyContent: 'flex-end' }}>
-              <button
-                type="button"
-                onClick={() => setShowPasswordGuide(!showPasswordGuide)}
-                style={{
-                  background: 'none',
-                  border: 'none',
-                  fontSize: '0.74rem',
-                  color: '#64748b',
-                  cursor: 'pointer',
-                  textDecoration: 'underline',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '4px',
-                  padding: 0,
-                }}
-              >
-                <ShieldCheck size={12} color="#64748b" />
-                <span>{showPasswordGuide ? 'Hide password strength helper' : 'Password security helper'}</span>
-              </button>
-            </div>
-
-            {showPasswordGuide && (
-              <PasswordStrengthMeter password={password} showCriteria={true} />
             )}
           </div>
 

@@ -72,6 +72,18 @@ const register = async (req, res, next) => {
       });
     }
 
+    const hasUpper = /[A-Z]/.test(password);
+    const hasLower = /[a-z]/.test(password);
+    const hasNumber = /[0-9]/.test(password);
+    const hasSpecial = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~`]/.test(password);
+
+    if (!hasUpper || !hasLower || !hasNumber || !hasSpecial) {
+      return res.status(400).json({
+        success: false,
+        message: 'Password must be strong (must include uppercase, lowercase, number, and a special character).',
+      });
+    }
+
     const normalizedEmail = email.toLowerCase().trim();
     const existingUser = await User.findOne({ email: normalizedEmail });
 
@@ -568,6 +580,18 @@ const resetPassword = async (req, res, next) => {
       return res.status(400).json({
         success: false,
         message: 'Password must be at least 6 characters long.',
+      });
+    }
+
+    const hasUpper = /[A-Z]/.test(password);
+    const hasLower = /[a-z]/.test(password);
+    const hasNumber = /[0-9]/.test(password);
+    const hasSpecial = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~`]/.test(password);
+
+    if (!hasUpper || !hasLower || !hasNumber || !hasSpecial) {
+      return res.status(400).json({
+        success: false,
+        message: 'Password must be strong (must include uppercase, lowercase, number, and a special character).',
       });
     }
 

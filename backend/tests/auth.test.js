@@ -55,6 +55,16 @@ describe('Authentication & Email Verification API', () => {
     expect(res.body.success).toBe(false);
   });
 
+  test('POST /api/auth/register - Rejects weak password lacking special characters, numbers or casing', async () => {
+    const res = await request(app)
+      .post('/api/auth/register')
+      .send({ ...sampleUser, email: 'weak@example.com', password: 'simplepassword', confirmPassword: 'simplepassword' });
+
+    expect(res.statusCode).toBe(400);
+    expect(res.body.success).toBe(false);
+    expect(res.body.message).toContain('Password must be strong');
+  });
+
   test('GET /api/auth/verify-email - Activates account upon valid token', async () => {
     const user = new User({
       name: 'Luigi Mario',

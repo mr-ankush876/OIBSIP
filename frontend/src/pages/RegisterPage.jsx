@@ -16,7 +16,6 @@ import {
 import { useAuth } from '../context/AuthContext';
 import { useLanguage } from '../context/LanguageContext';
 import PhoneCountryInput from '../components/PhoneCountryInput';
-import PasswordStrengthMeter from '../components/common/PasswordStrengthMeter';
 import apiClient from '../api/apiClient';
 
 const RegisterPage = () => {
@@ -78,6 +77,17 @@ const RegisterPage = () => {
 
     if (formData.password.length < 6) {
       setError('Password must be at least 6 characters long.');
+      return;
+    }
+
+    // Strong password function validation (runs behind the scenes without UI clutter)
+    const hasUpper = /[A-Z]/.test(formData.password);
+    const hasLower = /[a-z]/.test(formData.password);
+    const hasNumber = /[0-9]/.test(formData.password);
+    const hasSpecial = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~`]/.test(formData.password);
+
+    if (!hasUpper || !hasLower || !hasNumber || !hasSpecial) {
+      setError('Password must be strong (must include uppercase, lowercase, number, and a special character).');
       return;
     }
 
@@ -378,7 +388,7 @@ const RegisterPage = () => {
                   onChange={handleChange}
                   className="form-control"
                   style={{ paddingLeft: '38px', paddingRight: '38px', height: '42px', borderRadius: '8px' }}
-                  placeholder="At least 6 characters (8+ recommended)"
+                  placeholder="Enter your password"
                 />
                 <button
                   type="button"
@@ -396,13 +406,6 @@ const RegisterPage = () => {
                   {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
               </div>
-
-              {/* Real-time Password Strength Meter & Security Checklist */}
-              <PasswordStrengthMeter
-                password={formData.password}
-                confirmPassword={formData.confirmPassword}
-                showCriteria={true}
-              />
             </div>
 
             <div className="form-group" style={{ marginBottom: '22px' }}>
