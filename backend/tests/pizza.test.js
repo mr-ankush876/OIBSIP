@@ -8,6 +8,10 @@ beforeAll(async () => {
   await connectTestDB();
 });
 
+beforeEach(async () => {
+  await clearTestDB();
+});
+
 afterAll(async () => {
   await closeTestDB();
 });

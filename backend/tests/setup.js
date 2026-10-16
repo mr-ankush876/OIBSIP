@@ -21,6 +21,7 @@ const connectTestDB = async () => {
   });
   const uri = mongoServer.getUri();
   await mongoose.connect(uri);
+  await clearTestDB();
 };
 
 const closeTestDB = async () => {
@@ -34,9 +35,11 @@ const closeTestDB = async () => {
 };
 
 const clearTestDB = async () => {
-  const collections = mongoose.connection.collections;
-  for (const key in collections) {
-    await collections[key].deleteMany({});
+  if (mongoose.connection.readyState >= 1) {
+    const collections = mongoose.connection.collections;
+    for (const key in collections) {
+      await collections[key].deleteMany({});
+    }
   }
 };
 
