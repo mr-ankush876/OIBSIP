@@ -21,7 +21,7 @@ import apiClient from '../api/apiClient';
 
 const LoginPage = () => {
   const { t } = useTranslation();
-  const { login } = useAuth();
+  const { login, setAuthSession } = useAuth();
   const navigate = useNavigate();
 
   // Mode: 'phone' or 'email'
@@ -84,6 +84,7 @@ const LoginPage = () => {
     setError(null);
     setResendStatus(null);
     setVerificationMsg(null);
+    setVerificationSuccess(false);
     setRequiresVerification(false);
 
     // Basic frontend validations
@@ -128,19 +129,21 @@ const LoginPage = () => {
         navigate('/');
       }
     } catch (err) {
+      // Check specifically if user is unverified
       const isUnverified =
-        err.data?.requiresVerification ||
-        err.message?.toLowerCase().includes('verify') ||
-        err.message?.toLowerCase().includes('verification');
+        err.data?.requiresVerification === true ||
+        (err.data?.email && String(err.message || '').toLowerCase().includes('not been verified'));
 
       if (isUnverified) {
         setRequiresVerification(true);
+        setVerificationSuccess(false);
         const resolvedEmail = err.data?.email || (loginMode === 'email' ? email.trim() : '');
         setUnverifiedEmail(resolvedEmail);
         if (err.data?.verificationToken) setVerificationToken(err.data.verificationToken);
         if (err.data?.verificationLink) setVerificationLink(err.data.verificationLink);
         setError(null); // Keep card clean and non-duplicated
       } else {
+        setRequiresVerification(false);
         setError(err.message || 'Authentication failed. Please check your credentials.');
       }
     } finally {
@@ -164,6 +167,21 @@ const LoginPage = () => {
         setVerificationSuccess(true);
         setRequiresVerification(false);
         setError(null);
+
+        // If server provided token and user, immediately log in and redirect!
+        if (res.token && res.user) {
+          if (setAuthSession) {
+            setAuthSession(res.token, res.user);
+          } else {
+            localStorage.setItem('pizza_auth_token', res.token);
+          }
+          setVerificationMsg('Account verified! Opening your account...');
+          setTimeout(() => {
+            navigate('/');
+          }, 400);
+          return;
+        }
+
         setVerificationMsg(res.message || 'Account verified successfully! You can now log in.');
       }
     } catch (err) {
@@ -329,7 +347,7 @@ const LoginPage = () => {
         </div>
 
         {/* Verification Success Celebration Banner */}
-        {verificationSuccess && (
+        {verificationSuccess && !requiresVerification && (
           <div
             style={{
               backgroundColor: '#ecfdf5',

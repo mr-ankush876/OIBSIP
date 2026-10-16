@@ -94,6 +94,16 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const setAuthSession = (authToken, authUser) => {
+    if (authToken) {
+      localStorage.setItem('pizza_auth_token', authToken);
+      setToken(authToken);
+    }
+    if (authUser) {
+      setUser(authUser);
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -106,6 +116,7 @@ export const AuthProvider = ({ children }) => {
         adminLogin,
         register,
         logout,
+        setAuthSession,
         refreshUser: fetchCurrentUser,
       }}
     >

@@ -227,16 +227,7 @@ const verifyDirect = async (req, res, next) => {
     user.verificationExpires = undefined;
     await user.save();
 
-    res.status(200).json({
-      success: true,
-      message: 'Your account has been verified successfully! You can now log in.',
-      user: {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-        isVerified: true,
-      },
-    });
+    sendTokenResponse(user, 200, res, 'Your account has been verified and logged in successfully!');
   } catch (error) {
     next(error);
   }
@@ -347,7 +338,7 @@ const login = async (req, res, next) => {
     if (!user) {
       return res.status(401).json({
         success: false,
-        message: 'Invalid credentials. Please verify your email/phone and password.',
+        message: 'Invalid credentials. Please check your email/phone and password.',
       });
     }
 
@@ -355,7 +346,7 @@ const login = async (req, res, next) => {
     if (!isMatch) {
       return res.status(401).json({
         success: false,
-        message: 'Invalid credentials. Please verify your email/phone and password.',
+        message: 'Invalid credentials. Please check your email/phone and password.',
       });
     }
 
