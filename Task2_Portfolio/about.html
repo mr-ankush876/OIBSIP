@@ -10,8 +10,9 @@
 
   <header class="header">
     <div class="container nav-container">
-      <a href="index.html" class="brand-logo">
-        <span class="logo-bracket">&lt;</span>Ankush<span class="logo-accent">.dev</span><span class="logo-bracket"> /&gt;</span>
+      <a href="index.html" class="brand-logo" aria-label="Ankush Kumar Homepage">
+        <img src="logo.png" alt="AK Logo" class="brand-logo-img">
+        <span class="brand-text">Ankush<span class="logo-accent">.dev</span></span>
       </a>
 
       <nav class="nav-dock">
@@ -156,18 +157,77 @@
   </main>
 
   <footer class="footer">
-    <div class="container footer-container">
-      <div class="footer-left">
-        <span class="footer-logo">&lt;Ankush.dev /&gt;</span>
-        <p class="footer-copy">&copy; 2026 Ankush Kumar. Engineered with clean semantic HTML5 &amp; modern CSS3 for Oasis Infobyte (OIBSIP Task 2).</p>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col-brand">
+          <a href="index.html" class="footer-brand" aria-label="Ankush Kumar Homepage">
+            <img src="logo.png" alt="AK Logo" class="footer-logo-img">
+            <span class="footer-brand-text">Ankush<span class="logo-accent">.dev</span></span>
+          </a>
+          <p class="footer-bio">
+            Frontend &amp; Software Developer passionate about high-performance responsive web applications, modern UI/UX design, and clean scalable architecture.
+          </p>
+          <div class="footer-status-badge">
+            <span class="footer-status-dot"></span>
+            <span>Available for Internships &amp; Roles</span>
+          </div>
+        </div>
+
+        <div class="footer-col-contact">
+          <h4 class="footer-heading">Direct Contact</h4>
+          <div class="footer-contact-list">
+            <a href="mailto:kankush1907@gmail.com" class="footer-contact-item">
+              <svg class="footer-contact-svg" viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+              <div>
+                <span class="footer-contact-label">Official Email</span>
+                <span class="footer-contact-value">kankush1907@gmail.com</span>
+              </div>
+            </a>
+
+            <a href="tel:+918797254899" class="footer-contact-item">
+              <svg class="footer-contact-svg" viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+              <div>
+                <span class="footer-contact-label">Phone &amp; WhatsApp</span>
+                <span class="footer-contact-value">+91 87972 54899</span>
+              </div>
+            </a>
+
+            <div class="footer-contact-item">
+              <svg class="footer-contact-svg" viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+              <div>
+                <span class="footer-contact-label">Location / Address</span>
+                <span class="footer-contact-value">Patna, Bihar (800001), India</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="footer-col-social">
+          <h4 class="footer-heading">Professional Profiles</h4>
+          <div class="footer-social-column">
+            <a href="https://github.com/mr-ankush876" target="_blank" rel="noopener" class="footer-social-card">
+              <svg class="footer-social-svg" viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+              <span>github.com/mr-ankush876</span>
+            </a>
+
+            <a href="https://linkedin.com" target="_blank" rel="noopener" class="footer-social-card">
+              <svg class="footer-social-svg" viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+              <span>linkedin.com/in/ankush-kumar</span>
+            </a>
+
+            <a href="contact.html" class="footer-cta-btn">
+              <span>Send Direct Inquiry &rarr;</span>
+            </a>
+          </div>
+        </div>
       </div>
 
-      <div class="footer-right">
-        <a href="index.html" class="footer-link">Home</a>
-        <a href="about.html" class="footer-link">About</a>
-        <a href="skills.html" class="footer-link">Skills</a>
-        <a href="projects.html" class="footer-link">Projects</a>
-        <a href="contact.html" class="footer-link">Contact</a>
+      <div class="footer-bottom-bar">
+        <p class="footer-copy-text">&copy; 2026 Ankush Kumar. Engineered with clean semantic HTML5 &amp; modern CSS3 for Oasis Infobyte (OIBSIP Task 2).</p>
+        <a href="#" class="footer-back-to-top">
+          <span>Back to Top</span>
+          <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><polyline points="18 15 12 9 6 15"></polyline></svg>
+        </a>
       </div>
     </div>
   </footer>
