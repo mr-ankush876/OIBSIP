@@ -412,27 +412,29 @@ ul {
 }
 
 .profile-avatar-aura {
-  width: 100px;
-  height: 100px;
+  width: 114px;
+  height: 114px;
   margin: 0 auto 18px;
   border-radius: 50%;
   padding: 3px;
-  background: linear-gradient(135deg, #6366f1, #06b6d4);
-  box-shadow: 0 0 25px rgba(99, 102, 241, 0.4);
+  background: linear-gradient(135deg, #6366f1, #38bdf8, #06b6d4);
+  box-shadow: 0 0 28px rgba(56, 189, 248, 0.4);
+  position: relative;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
 }
 
-.profile-avatar {
+.profile-avatar-aura:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 38px rgba(56, 189, 248, 0.65);
+}
+
+.profile-avatar-img {
   width: 100%;
   height: 100%;
   border-radius: 50%;
-  background-color: #0b0f19;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 2.2rem;
-  font-weight: 800;
-  color: #ffffff;
-  letter-spacing: -1px;
+  object-fit: cover;
+  display: block;
+  border: 2px solid #090d16;
 }
 
 .profile-card-name {
@@ -443,9 +445,11 @@ ul {
 }
 
 .profile-card-role {
-  font-size: 0.85rem;
+  font-size: 0.88rem;
   color: #38bdf8;
-  font-weight: 600;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
   margin-bottom: 24px;
 }
 
