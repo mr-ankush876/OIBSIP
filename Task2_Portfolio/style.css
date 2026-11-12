@@ -24,7 +24,7 @@ a {
 
 .container {
   width: 100%;
-  max-width: 1080px;
+  max-width: 1100px;
   margin: 0 auto;
   padding: 0 24px;
 }
@@ -312,7 +312,7 @@ a {
 
 .projects-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
   gap: 28px;
 }
 
@@ -487,10 +487,6 @@ a {
   }
 
   .skills-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .projects-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
