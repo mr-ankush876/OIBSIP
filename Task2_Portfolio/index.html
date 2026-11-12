@@ -10,7 +10,7 @@
 
   <header class="header">
     <div class="container nav-container">
-      <a href="#hero" class="brand-logo">
+      <a href="index.html" class="brand-logo">
         <span class="logo-bracket">&lt;</span>Ankush<span class="logo-accent">.dev</span><span class="logo-bracket"> /&gt;</span>
       </a>
 
@@ -22,19 +22,35 @@
       </label>
 
       <nav class="nav-menu">
-        <a href="#about" class="nav-link">About</a>
-        <a href="#skills" class="nav-link">Skills</a>
-        <a href="#projects" class="nav-link">Projects</a>
-        <a href="#contact" class="nav-link">Contact</a>
-        <a href="#contact" class="btn btn-primary nav-cta-mobile">Let's Connect</a>
+        <a href="index.html" class="nav-link active">
+          <span class="nav-icon">&#127968;</span>
+          <span>Home</span>
+        </a>
+        <a href="about.html" class="nav-link">
+          <span class="nav-icon">&#128100;</span>
+          <span>About</span>
+        </a>
+        <a href="skills.html" class="nav-link">
+          <span class="nav-icon">&#9889;</span>
+          <span>Skills</span>
+        </a>
+        <a href="projects.html" class="nav-link">
+          <span class="nav-icon">&#128640;</span>
+          <span>Projects</span>
+        </a>
+        <a href="contact.html" class="nav-link">
+          <span class="nav-icon">&#128236;</span>
+          <span>Contact</span>
+        </a>
+        <a href="contact.html" class="btn btn-primary nav-cta-mobile">Let's Connect</a>
       </nav>
 
-      <a href="#contact" class="btn btn-primary nav-cta-desktop">Let's Connect</a>
+      <a href="contact.html" class="btn btn-primary nav-cta-desktop">Let's Connect</a>
     </div>
   </header>
 
   <main>
-    <section id="hero" class="hero-section">
+    <section class="hero-section">
       <div class="ambient-glow glow-1"></div>
       <div class="ambient-glow glow-2"></div>
       <div class="container hero-container">
@@ -57,7 +73,7 @@
           </p>
 
           <div class="hero-actions">
-            <a href="#projects" class="btn btn-primary">
+            <a href="projects.html" class="btn btn-primary">
               <span>Explore My Work</span>
               <span class="btn-arrow">&rarr;</span>
             </a>
@@ -111,21 +127,24 @@
       </div>
     </section>
 
-    <section id="about" class="about-section">
+    <section class="about-section">
       <div class="container">
         <div class="section-badge-wrapper">
-          <span class="section-badge">Background &amp; Vision</span>
+          <span class="section-badge">&#128100; Overview</span>
         </div>
-        <h2 class="section-title">About My Journey</h2>
+        <h2 class="section-title">Who I Am</h2>
 
         <div class="about-grid">
           <div class="about-card-main">
             <p class="about-text">
               I am an enthusiastic Computer Science undergraduate passionate about crafting pixel-perfect, accessible, and intuitive digital interfaces. My development philosophy focuses on clean architectural foundations &mdash; eliminating unnecessary bloat and writing structured, standard-compliant code.
             </p>
-            <p class="about-text">
-              From building responsive multi-page web applications during my Oasis Infobyte internship to developing algorithmic C++ utilities and interactive JavaScript games, I constantly challenge myself to solve practical problems and sharpen my engineering mindset.
-            </p>
+            <div class="section-action-box">
+              <a href="about.html" class="btn btn-primary">
+                <span>Read Full Biography &amp; Education</span>
+                <span class="btn-arrow">&rarr;</span>
+              </a>
+            </div>
           </div>
 
           <div class="about-cards-side">
@@ -146,28 +165,19 @@
                 <span class="info-sub">Oasis Infobyte (OIBSIP Task Program)</span>
               </div>
             </div>
-
-            <div class="info-glass-card">
-              <div class="info-icon">&#127757;</div>
-              <div class="info-content">
-                <span class="info-label">Location</span>
-                <strong class="info-title">India</strong>
-                <span class="info-sub">Available for Remote &amp; On-Site Opportunities</span>
-              </div>
-            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <section id="skills" class="skills-section">
+    <section class="skills-section">
       <div class="container">
         <div class="section-badge-wrapper">
-          <span class="section-badge">Technical Stack</span>
+          <span class="section-badge">&#9889; Competencies</span>
         </div>
-        <h2 class="section-title">Skills &amp; Competencies</h2>
+        <h2 class="section-title">Core Skills</h2>
         <p class="section-subtitle">
-          Core technical abilities and developer tooling cultivated through project development and academic study.
+          Core technical abilities and developer tooling cultivated through project development.
         </p>
 
         <div class="skills-grid">
@@ -181,8 +191,6 @@
               <li class="skill-pill">Modern CSS3</li>
               <li class="skill-pill">Flexbox &amp; CSS Grid</li>
               <li class="skill-pill">Responsive Design</li>
-              <li class="skill-pill">Glassmorphism UI</li>
-              <li class="skill-pill">Mobile-First Layouts</li>
             </ul>
           </div>
 
@@ -194,57 +202,58 @@
             <ul class="skills-pill-list">
               <li class="skill-pill">JavaScript (ES6+)</li>
               <li class="skill-pill">C++ Programming</li>
-              <li class="skill-pill">Object-Oriented Programming</li>
               <li class="skill-pill">Data Structures</li>
-              <li class="skill-pill">Algorithms &amp; Problem Solving</li>
-              <li class="skill-pill">DOM Manipulation</li>
+              <li class="skill-pill">Algorithms</li>
             </ul>
           </div>
 
           <div class="skill-category-card">
             <div class="category-header">
               <span class="category-icon">&#128025;</span>
-              <h3 class="category-title">Tooling &amp; Best Practices</h3>
+              <h3 class="category-title">Developer Tooling</h3>
             </div>
             <ul class="skills-pill-list">
               <li class="skill-pill">Git &amp; GitHub</li>
               <li class="skill-pill">VS Code</li>
               <li class="skill-pill">Web Performance</li>
-              <li class="skill-pill">Cross-Browser Testing</li>
-              <li class="skill-pill">Accessible Web (a11y)</li>
               <li class="skill-pill">Clean Code Discipline</li>
             </ul>
           </div>
         </div>
+
+        <div class="section-center-cta">
+          <a href="skills.html" class="btn btn-glass">
+            <span>View Complete Skill Inventory</span>
+            <span class="btn-arrow">&rarr;</span>
+          </a>
+        </div>
       </div>
     </section>
 
-    <section id="projects" class="projects-section">
+    <section class="projects-section">
       <div class="container">
         <div class="section-badge-wrapper">
-          <span class="section-badge">Featured Repositories</span>
+          <span class="section-badge">&#128640; Public Work</span>
         </div>
-        <h2 class="section-title">Featured GitHub Projects</h2>
+        <h2 class="section-title">Featured Projects</h2>
         <p class="section-subtitle">
-          Authentic public repositories showcasing full-stack workflows, responsive design, interactive web apps, and C++ algorithms.
+          Explore real-world applications deployed and maintained on GitHub.
         </p>
 
         <div class="projects-grid">
           <div class="project-glass-card">
-            <div class="card-glow"></div>
             <div class="project-topbar">
               <span class="card-badge primary-badge">OIBSIP Internship</span>
               <span class="git-icon">&#128025;</span>
             </div>
             <h3 class="project-card-title">OIBSIP Multi-Page Platform</h3>
             <p class="project-card-desc">
-              Comprehensive multi-page web platform featuring an artisan coffee landing page (Roast &amp; Ground), personal portfolio, and web apps built with pure HTML5, modern CSS3 layouts, and animated mobile navigation.
+              Comprehensive multi-page web platform featuring an artisan coffee landing page (Roast &amp; Ground), personal portfolio, and web apps built with pure HTML5 and modern CSS3 layouts.
             </p>
             <div class="tag-row">
               <span class="tech-tag">HTML5</span>
               <span class="tech-tag">CSS3</span>
               <span class="tech-tag">CSS Grid</span>
-              <span class="tech-tag">Multi-Page</span>
             </div>
             <div class="card-action">
               <a href="https://github.com/mr-ankush876/OIBSIP" class="project-link-btn" target="_blank" rel="noopener">
@@ -255,7 +264,6 @@
           </div>
 
           <div class="project-glass-card">
-            <div class="card-glow"></div>
             <div class="project-topbar">
               <span class="card-badge">Food Delivery UI</span>
               <span class="git-icon">&#128025;</span>
@@ -268,7 +276,6 @@
               <span class="tech-tag">HTML5</span>
               <span class="tech-tag">CSS3</span>
               <span class="tech-tag">JavaScript</span>
-              <span class="tech-tag">Responsive</span>
             </div>
             <div class="card-action">
               <a href="https://github.com/mr-ankush876/RESPONSIVE-LANDING-PAGE" class="project-link-btn" target="_blank" rel="noopener">
@@ -279,7 +286,6 @@
           </div>
 
           <div class="project-glass-card">
-            <div class="card-glow"></div>
             <div class="project-topbar">
               <span class="card-badge">Web Application</span>
               <span class="git-icon">&#128025;</span>
@@ -291,7 +297,6 @@
             <div class="tag-row">
               <span class="tech-tag">JavaScript</span>
               <span class="tech-tag">HTML5</span>
-              <span class="tech-tag">CSS3</span>
               <span class="tech-tag">Game Logic</span>
             </div>
             <div class="card-action">
@@ -301,175 +306,31 @@
               </a>
             </div>
           </div>
+        </div>
 
-          <div class="project-glass-card">
-            <div class="card-glow"></div>
-            <div class="project-topbar">
-              <span class="card-badge">Productivity Tool</span>
-              <span class="git-icon">&#128025;</span>
-            </div>
-            <h3 class="project-card-title">Modern To-Do List Web App</h3>
-            <p class="project-card-desc">
-              Sleek, fully responsive task organizer allowing users to create, complete, filter, and persist daily tasks with real-time UI updates, local storage sync, and category markers.
-            </p>
-            <div class="tag-row">
-              <span class="tech-tag">HTML5</span>
-              <span class="tech-tag">CSS3</span>
-              <span class="tech-tag">Local Storage</span>
-              <span class="tech-tag">DOM Manipulation</span>
-            </div>
-            <div class="card-action">
-              <a href="https://github.com/mr-ankush876/TO-DO-Web-App" class="project-link-btn" target="_blank" rel="noopener">
-                <span>View on GitHub</span>
-                <span class="link-arrow">&rarr;</span>
-              </a>
-            </div>
-          </div>
-
-          <div class="project-glass-card">
-            <div class="card-glow"></div>
-            <div class="project-topbar">
-              <span class="card-badge">Calculator Utility</span>
-              <span class="git-icon">&#128025;</span>
-            </div>
-            <h3 class="project-card-title">Responsive Calculator Application</h3>
-            <p class="project-card-desc">
-              Mobile-friendly mathematical calculator application offering precise arithmetic evaluation, keyboard input handlers, tactile button feedback, and an adaptive CSS Grid display.
-            </p>
-            <div class="tag-row">
-              <span class="tech-tag">HTML5</span>
-              <span class="tech-tag">CSS3</span>
-              <span class="tech-tag">JavaScript</span>
-              <span class="tech-tag">Grid Layout</span>
-            </div>
-            <div class="card-action">
-              <a href="https://github.com/mr-ankush876/Calculator-web-application" class="project-link-btn" target="_blank" rel="noopener">
-                <span>View on GitHub</span>
-                <span class="link-arrow">&rarr;</span>
-              </a>
-            </div>
-          </div>
-
-          <div class="project-glass-card">
-            <div class="card-glow"></div>
-            <div class="project-topbar">
-              <span class="card-badge">Full Stack System</span>
-              <span class="git-icon">&#128025;</span>
-            </div>
-            <h3 class="project-card-title">Hospital Management Portal</h3>
-            <p class="project-card-desc">
-              Full-featured healthcare management platform designed for patient appointments, doctor scheduling, medical department administration, and centralized records.
-            </p>
-            <div class="tag-row">
-              <span class="tech-tag">JavaScript</span>
-              <span class="tech-tag">Full Stack</span>
-              <span class="tech-tag">MERN Architecture</span>
-              <span class="tech-tag">REST API</span>
-            </div>
-            <div class="card-action">
-              <a href="https://github.com/mr-ankush876/hospital_project" class="project-link-btn" target="_blank" rel="noopener">
-                <span>View on GitHub</span>
-                <span class="link-arrow">&rarr;</span>
-              </a>
-            </div>
-          </div>
-
-          <div class="project-glass-card">
-            <div class="card-glow"></div>
-            <div class="project-topbar">
-              <span class="card-badge">Systems &amp; CLI</span>
-              <span class="git-icon">&#128025;</span>
-            </div>
-            <h3 class="project-card-title">C++ Console Task Manager</h3>
-            <p class="project-card-desc">
-              Fast, lightweight command-line interface application written in C++ demonstrating object-oriented principles, memory management, and file persistence for task scheduling.
-            </p>
-            <div class="tag-row">
-              <span class="tech-tag">C++</span>
-              <span class="tech-tag">OOP</span>
-              <span class="tech-tag">CLI</span>
-              <span class="tech-tag">Data Structures</span>
-            </div>
-            <div class="card-action">
-              <a href="https://github.com/mr-ankush876/-Console-Based-To-Do-List-Manager" class="project-link-btn" target="_blank" rel="noopener">
-                <span>View on GitHub</span>
-                <span class="link-arrow">&rarr;</span>
-              </a>
-            </div>
-          </div>
-
-          <div class="project-glass-card">
-            <div class="card-glow"></div>
-            <div class="project-topbar">
-              <span class="card-badge">Algorithms &amp; DSA</span>
-              <span class="git-icon">&#128025;</span>
-            </div>
-            <h3 class="project-card-title">LeetCode Solutions Repository</h3>
-            <p class="project-card-desc">
-              Structured repository of algorithmic solutions covering array hashing, binary search, two-pointer techniques, recursion, trees, and dynamic programming with optimal time complexity.
-            </p>
-            <div class="tag-row">
-              <span class="tech-tag">Algorithms</span>
-              <span class="tech-tag">Problem Solving</span>
-              <span class="tech-tag">Data Structures</span>
-              <span class="tech-tag">Optimization</span>
-            </div>
-            <div class="card-action">
-              <a href="https://github.com/mr-ankush876/LEETCODE" class="project-link-btn" target="_blank" rel="noopener">
-                <span>View on GitHub</span>
-                <span class="link-arrow">&rarr;</span>
-              </a>
-            </div>
-          </div>
+        <div class="section-center-cta">
+          <a href="projects.html" class="btn btn-primary">
+            <span>View All 8 Repositories on Dedicated Projects Page</span>
+            <span class="btn-arrow">&rarr;</span>
+          </a>
         </div>
       </div>
     </section>
 
-    <section id="contact" class="contact-section">
+    <section class="contact-section">
       <div class="container">
         <div class="contact-hub-card">
           <div class="ambient-glow glow-contact"></div>
           <div class="section-badge-wrapper">
-            <span class="section-badge">Direct Communication</span>
+            <span class="section-badge">&#128236; Contact</span>
           </div>
-          <h2 class="section-title">Let's Build Something Exceptional</h2>
+          <h2 class="section-title">Ready to Connect?</h2>
           <p class="contact-desc">
-            I am actively looking for web development internships, junior frontend roles, and open-source collaborations. Have a question or project idea? Feel free to connect directly.
+            Open for junior developer opportunities and technical discussions.
           </p>
-
-          <div class="contact-channels-grid">
-            <a href="mailto:kankush1907@gmail.com" class="channel-card">
-              <span class="channel-icon">&#9993;</span>
-              <span class="channel-title">Email</span>
-              <strong class="channel-value">kankush1907@gmail.com</strong>
-              <span class="channel-hint">Quick response within 24h &rarr;</span>
-            </a>
-
-            <a href="tel:+918797254899" class="channel-card">
-              <span class="channel-icon">&#9742;</span>
-              <span class="channel-title">Phone / WhatsApp</span>
-              <strong class="channel-value">+91 87972 54899</strong>
-              <span class="channel-hint">Direct call or message &rarr;</span>
-            </a>
-
-            <a href="https://github.com/mr-ankush876" class="channel-card" target="_blank" rel="noopener">
-              <span class="channel-icon">&#128025;</span>
-              <span class="channel-title">GitHub Profile</span>
-              <strong class="channel-value">@mr-ankush876</strong>
-              <span class="channel-hint">Check repositories &amp; code &rarr;</span>
-            </a>
-
-            <a href="https://linkedin.com" class="channel-card" target="_blank" rel="noopener">
-              <span class="channel-icon">&#128101;</span>
-              <span class="channel-title">LinkedIn Profile</span>
-              <strong class="channel-value">Ankush Kumar</strong>
-              <span class="channel-hint">Connect professionally &rarr;</span>
-            </a>
-          </div>
-
           <div class="contact-action-box">
-            <a href="mailto:kankush1907@gmail.com" class="btn btn-primary btn-large">
-              <span>Send Me an Email</span>
+            <a href="contact.html" class="btn btn-primary btn-large">
+              <span>Go to Contact Page</span>
               <span class="btn-arrow">&rarr;</span>
             </a>
           </div>
@@ -486,11 +347,11 @@
       </div>
 
       <div class="footer-right">
-        <a href="#hero" class="footer-link">Back to Top</a>
-        <a href="#about" class="footer-link">About</a>
-        <a href="#skills" class="footer-link">Skills</a>
-        <a href="#projects" class="footer-link">Projects</a>
-        <a href="#contact" class="footer-link">Contact</a>
+        <a href="index.html" class="footer-link">Home</a>
+        <a href="about.html" class="footer-link">About</a>
+        <a href="skills.html" class="footer-link">Skills</a>
+        <a href="projects.html" class="footer-link">Projects</a>
+        <a href="contact.html" class="footer-link">Contact</a>
       </div>
     </div>
   </footer>

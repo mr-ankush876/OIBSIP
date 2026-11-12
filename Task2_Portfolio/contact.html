@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Me | Ankush Kumar</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="header">
+    <div class="container nav-container">
+      <a href="index.html" class="brand-logo">
+        <span class="logo-bracket">&lt;</span>Ankush<span class="logo-accent">.dev</span><span class="logo-bracket"> /&gt;</span>
+      </a>
+
+      <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-label="Toggle Navigation">
+      <label for="nav-toggle" class="nav-toggle-btn">
+        <span></span>
+        <span></span>
+        <span></span>
+      </label>
+
+      <nav class="nav-menu">
+        <a href="index.html" class="nav-link">
+          <span class="nav-icon">&#127968;</span>
+          <span>Home</span>
+        </a>
+        <a href="about.html" class="nav-link">
+          <span class="nav-icon">&#128100;</span>
+          <span>About</span>
+        </a>
+        <a href="skills.html" class="nav-link">
+          <span class="nav-icon">&#9889;</span>
+          <span>Skills</span>
+        </a>
+        <a href="projects.html" class="nav-link">
+          <span class="nav-icon">&#128640;</span>
+          <span>Projects</span>
+        </a>
+        <a href="contact.html" class="nav-link active">
+          <span class="nav-icon">&#128236;</span>
+          <span>Contact</span>
+        </a>
+        <a href="contact.html" class="btn btn-primary nav-cta-mobile">Let's Connect</a>
+      </nav>
+
+      <a href="contact.html" class="btn btn-primary nav-cta-desktop">Let's Connect</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-banner">
+      <div class="ambient-glow glow-1"></div>
+      <div class="container">
+        <div class="section-badge-wrapper">
+          <span class="section-badge">&#128236; Direct Channels</span>
+        </div>
+        <h1 class="page-title">Let's Connect &amp; Collaborate</h1>
+        <p class="page-subtitle">
+          I am actively exploring frontend development internships, junior software roles, and open-source contributions. Feel free to send a message or connect through my professional profiles.
+        </p>
+      </div>
+    </section>
+
+    <section class="contact-section">
+      <div class="container">
+        <div class="contact-page-layout">
+          <div class="contact-form-glass">
+            <h2 class="content-heading">Send a Direct Message</h2>
+            <p class="form-subtext">Fill in the fields below and I will respond to your inquiry promptly.</p>
+
+            <form action="#" method="get" class="dev-form">
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="name" class="form-label">Full Name</label>
+                  <input type="text" id="name" name="name" class="form-input" placeholder="e.g. Aditi Sharma" required>
+                </div>
+                <div class="form-group">
+                  <label for="email" class="form-label">Email Address</label>
+                  <input type="email" id="email" name="email" class="form-input" placeholder="e.g. aditi@example.com" required>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="subject" class="form-label">Inquiry Subject</label>
+                <select id="subject" name="subject" class="form-select">
+                  <option value="internship">Web Development Internship / Role</option>
+                  <option value="freelance">Freelance Web Design Project</option>
+                  <option value="collaboration">Open Source Collaboration</option>
+                  <option value="general">General Technical Question</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="message" class="form-label">Your Message</label>
+                <textarea id="message" name="message" class="form-textarea" rows="5" placeholder="Share your project requirements, team details, or thoughts..." required></textarea>
+              </div>
+
+              <button type="submit" class="btn btn-primary btn-large btn-block">
+                <span>Submit Message</span>
+                <span class="btn-arrow">&rarr;</span>
+              </button>
+            </form>
+          </div>
+
+          <div class="contact-cards-column">
+            <a href="mailto:kankush1907@gmail.com" class="channel-card">
+              <span class="channel-icon">&#9993;</span>
+              <span class="channel-title">Official Email</span>
+              <strong class="channel-value">kankush1907@gmail.com</strong>
+              <span class="channel-hint">Response within 24 hours &rarr;</span>
+            </a>
+
+            <a href="tel:+918797254899" class="channel-card">
+              <span class="channel-icon">&#9742;</span>
+              <span class="channel-title">Phone &amp; WhatsApp</span>
+              <strong class="channel-value">+91 87972 54899</strong>
+              <span class="channel-hint">Direct call or message &rarr;</span>
+            </a>
+
+            <a href="https://github.com/mr-ankush876" class="channel-card" target="_blank" rel="noopener">
+              <span class="channel-icon">&#128025;</span>
+              <span class="channel-title">GitHub Profile</span>
+              <strong class="channel-value">github.com/mr-ankush876</strong>
+              <span class="channel-hint">Explore 8+ public repositories &rarr;</span>
+            </a>
+
+            <a href="https://linkedin.com" class="channel-card" target="_blank" rel="noopener">
+              <span class="channel-icon">&#128101;</span>
+              <span class="channel-title">LinkedIn Network</span>
+              <strong class="channel-value">linkedin.com/in/ankush-kumar</strong>
+              <span class="channel-hint">Connect professionally &rarr;</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-container">
+      <div class="footer-left">
+        <span class="footer-logo">&lt;Ankush.dev /&gt;</span>
+        <p class="footer-copy">&copy; 2026 Ankush Kumar. Engineered with clean semantic HTML5 &amp; modern CSS3 for Oasis Infobyte (OIBSIP Task 2).</p>
+      </div>
+
+      <div class="footer-right">
+        <a href="index.html" class="footer-link">Home</a>
+        <a href="about.html" class="footer-link">About</a>
+        <a href="skills.html" class="footer-link">Skills</a>
+        <a href="projects.html" class="footer-link">Projects</a>
+        <a href="contact.html" class="footer-link">Contact</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
