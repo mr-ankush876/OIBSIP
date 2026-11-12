@@ -1172,8 +1172,7 @@ a.footer-contact-item:hover {
 }
 
 .footer-social-icons,
-.contact-social-dock,
-.hero-social-dock {
+.contact-social-dock {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -1181,19 +1180,12 @@ a.footer-contact-item:hover {
   margin-bottom: 20px;
 }
 
-.hero-social-row {
+.hero-social-dock {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 10px;
+  flex-wrap: wrap;
   margin-bottom: 32px;
-}
-
-.hero-social-label {
-  font-size: 0.82rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.8px;
-  color: #64748b;
 }
 
 .social-icon-btn {
