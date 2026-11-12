@@ -46,6 +46,7 @@ ul {
   align-items: center;
   justify-content: space-between;
   height: 72px;
+  position: relative;
 }
 
 .brand-logo {
@@ -53,6 +54,22 @@ ul {
   font-weight: 800;
   letter-spacing: -0.5px;
   color: #1e1915;
+}
+
+.nav-toggle {
+  display: none;
+}
+
+.nav-toggle-label {
+  display: none;
+}
+
+.nav-arrow {
+  display: none;
+}
+
+.mobile-cta-wrapper {
+  display: none;
 }
 
 .nav-menu {
@@ -71,6 +88,10 @@ ul {
   color: #c85a28;
 }
 
+.desktop-cta {
+  display: inline-block;
+}
+
 .btn {
   display: inline-block;
   font-size: 0.95rem;
@@ -80,7 +101,7 @@ ul {
   cursor: pointer;
   text-align: center;
   border: 1px solid transparent;
-  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
 }
 
 .btn-primary {
@@ -111,6 +132,11 @@ ul {
 .btn-outline:hover {
   background-color: #c85a28;
   color: #ffffff;
+}
+
+.btn-block {
+  display: block;
+  width: 100%;
 }
 
 .hero-section {
@@ -636,27 +662,125 @@ ul {
 }
 
 @media (max-width: 768px) {
+  .desktop-cta {
+    display: none;
+  }
+
   .nav-container {
-    height: auto;
-    padding-top: 16px;
-    padding-bottom: 16px;
-    flex-wrap: wrap;
-    gap: 12px;
+    height: 68px;
+  }
+
+  .nav-toggle-label {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 8px;
+    border: 1px solid #e8e2d8;
+    background-color: #ffffff;
+    cursor: pointer;
+    gap: 5px;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+  }
+
+  .hamburger-line {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background-color: #1e1915;
+    border-radius: 2px;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease, background-color 0.2s ease;
+  }
+
+  .nav-toggle:checked ~ .nav-toggle-label {
+    border-color: #c85a28;
+    background-color: #faebe3;
+  }
+
+  .nav-toggle:checked ~ .nav-toggle-label .hamburger-line:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+    background-color: #c85a28;
+  }
+
+  .nav-toggle:checked ~ .nav-toggle-label .hamburger-line:nth-child(2) {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+
+  .nav-toggle:checked ~ .nav-toggle-label .hamburger-line:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+    background-color: #c85a28;
   }
 
   .nav-menu {
-    order: 3;
+    position: absolute;
+    top: calc(100% + 1px);
+    left: 0;
+    right: 0;
     width: 100%;
-    justify-content: flex-start;
-    flex-wrap: wrap;
-    gap: 16px;
-    padding-top: 8px;
-    border-top: 1px solid #f0ebe2;
+    background-color: #ffffff;
+    border-bottom: 2px solid #e8e2d8;
+    box-shadow: 0 16px 36px rgba(30, 25, 21, 0.12);
+    padding: 16px 20px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-height: 0;
+    opacity: 0;
+    visibility: hidden;
+    overflow: hidden;
+    transform: translateY(-8px);
+    transition: max-height 0.35s ease, opacity 0.25s ease, transform 0.25s ease, visibility 0.25s;
   }
 
-  .nav-cta {
-    padding: 8px 16px;
-    font-size: 0.85rem;
+  .nav-toggle:checked ~ .nav-menu {
+    max-height: 480px;
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  .nav-menu .nav-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    border-radius: 8px;
+    background-color: #fbf9f5;
+    border: 1px solid #f0ebe2;
+    color: #231f1c;
+    font-size: 0.95rem;
+    font-weight: 600;
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, padding-left 0.2s ease;
+  }
+
+  .nav-menu .nav-link:hover {
+    background-color: #faebe3;
+    border-color: #eecbc0;
+    color: #c85a28;
+    padding-left: 20px;
+  }
+
+  .nav-arrow {
+    display: inline-block;
+    font-size: 1.3rem;
+    line-height: 1;
+    color: #a89f95;
+    transition: transform 0.2s ease, color 0.2s ease;
+  }
+
+  .nav-menu .nav-link:hover .nav-arrow {
+    color: #c85a28;
+    transform: translateX(3px);
+  }
+
+  .mobile-cta-wrapper {
+    display: block;
+    margin-top: 6px;
+    padding-top: 10px;
+    border-top: 1px solid #f0ebe2;
   }
 
   .hero-section {
