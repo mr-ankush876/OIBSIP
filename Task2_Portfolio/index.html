@@ -14,38 +14,30 @@
         <span class="logo-bracket">&lt;</span>Ankush<span class="logo-accent">.dev</span><span class="logo-bracket"> /&gt;</span>
       </a>
 
-      <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-label="Toggle Navigation">
-      <label for="nav-toggle" class="nav-toggle-btn">
-        <span></span>
-        <span></span>
-        <span></span>
-      </label>
-
-      <nav class="nav-menu">
-        <a href="index.html" class="nav-link active">
-          <span class="nav-icon">&#127968;</span>
-          <span>Home</span>
+      <nav class="nav-dock">
+        <a href="index.html" class="nav-btn active" aria-label="Home">
+          <svg class="nav-svg" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+          <span class="nav-tooltip">Home</span>
         </a>
-        <a href="about.html" class="nav-link">
-          <span class="nav-icon">&#128100;</span>
-          <span>About</span>
+        <a href="about.html" class="nav-btn" aria-label="About">
+          <svg class="nav-svg" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+          <span class="nav-tooltip">About</span>
         </a>
-        <a href="skills.html" class="nav-link">
-          <span class="nav-icon">&#9889;</span>
-          <span>Skills</span>
+        <a href="skills.html" class="nav-btn" aria-label="Skills">
+          <svg class="nav-svg" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+          <span class="nav-tooltip">Skills</span>
         </a>
-        <a href="projects.html" class="nav-link">
-          <span class="nav-icon">&#128640;</span>
-          <span>Projects</span>
+        <a href="projects.html" class="nav-btn" aria-label="Projects">
+          <svg class="nav-svg" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+          <span class="nav-tooltip">Projects</span>
         </a>
-        <a href="contact.html" class="nav-link">
-          <span class="nav-icon">&#128236;</span>
-          <span>Contact</span>
+        <a href="contact.html" class="nav-btn" aria-label="Contact">
+          <svg class="nav-svg" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+          <span class="nav-tooltip">Contact</span>
         </a>
-        <a href="contact.html" class="btn btn-primary nav-cta-mobile">Let's Connect</a>
       </nav>
 
-      <a href="contact.html" class="btn btn-primary nav-cta-desktop">Let's Connect</a>
+      <a href="contact.html" class="btn btn-primary nav-cta">Let's Connect</a>
     </div>
   </header>
 
@@ -130,7 +122,7 @@
     <section class="about-section">
       <div class="container">
         <div class="section-badge-wrapper">
-          <span class="section-badge">&#128100; Overview</span>
+          <span class="section-badge">Developer Profile</span>
         </div>
         <h2 class="section-title">Who I Am</h2>
 
@@ -149,7 +141,9 @@
 
           <div class="about-cards-side">
             <div class="info-glass-card">
-              <div class="info-icon">&#127891;</div>
+              <div class="info-svg-box">
+                <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>
+              </div>
               <div class="info-content">
                 <span class="info-label">Education</span>
                 <strong class="info-title">Computer Science &amp; Engineering</strong>
@@ -158,7 +152,9 @@
             </div>
 
             <div class="info-glass-card">
-              <div class="info-icon">&#128188;</div>
+              <div class="info-svg-box">
+                <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+              </div>
               <div class="info-content">
                 <span class="info-label">Experience</span>
                 <strong class="info-title">Web Development Intern</strong>
@@ -173,17 +169,19 @@
     <section class="skills-section">
       <div class="container">
         <div class="section-badge-wrapper">
-          <span class="section-badge">&#9889; Competencies</span>
+          <span class="section-badge">Competencies</span>
         </div>
         <h2 class="section-title">Core Skills</h2>
         <p class="section-subtitle">
-          Core technical abilities and developer tooling cultivated through project development.
+          Technical abilities and developer tooling cultivated through project development.
         </p>
 
         <div class="skills-grid">
           <div class="skill-category-card">
             <div class="category-header">
-              <span class="category-icon">&#128187;</span>
+              <div class="cat-svg-box">
+                <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+              </div>
               <h3 class="category-title">Frontend Architecture</h3>
             </div>
             <ul class="skills-pill-list">
@@ -196,7 +194,9 @@
 
           <div class="skill-category-card">
             <div class="category-header">
-              <span class="category-icon">&#9881;</span>
+              <div class="cat-svg-box">
+                <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+              </div>
               <h3 class="category-title">Programming &amp; Logic</h3>
             </div>
             <ul class="skills-pill-list">
@@ -209,7 +209,9 @@
 
           <div class="skill-category-card">
             <div class="category-header">
-              <span class="category-icon">&#128025;</span>
+              <div class="cat-svg-box">
+                <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+              </div>
               <h3 class="category-title">Developer Tooling</h3>
             </div>
             <ul class="skills-pill-list">
@@ -233,7 +235,7 @@
     <section class="projects-section">
       <div class="container">
         <div class="section-badge-wrapper">
-          <span class="section-badge">&#128640; Public Work</span>
+          <span class="section-badge">Public Repositories</span>
         </div>
         <h2 class="section-title">Featured Projects</h2>
         <p class="section-subtitle">
@@ -244,7 +246,7 @@
           <div class="project-glass-card">
             <div class="project-topbar">
               <span class="card-badge primary-badge">OIBSIP Internship</span>
-              <span class="git-icon">&#128025;</span>
+              <span class="git-label">Repo</span>
             </div>
             <h3 class="project-card-title">OIBSIP Multi-Page Platform</h3>
             <p class="project-card-desc">
@@ -266,7 +268,7 @@
           <div class="project-glass-card">
             <div class="project-topbar">
               <span class="card-badge">Food Delivery UI</span>
-              <span class="git-icon">&#128025;</span>
+              <span class="git-label">Repo</span>
             </div>
             <h3 class="project-card-title">Responsive Food Delivery Landing Page</h3>
             <p class="project-card-desc">
@@ -288,7 +290,7 @@
           <div class="project-glass-card">
             <div class="project-topbar">
               <span class="card-badge">Web Application</span>
-              <span class="git-icon">&#128025;</span>
+              <span class="git-label">Repo</span>
             </div>
             <h3 class="project-card-title">Interactive Quiz Game</h3>
             <p class="project-card-desc">
@@ -322,7 +324,7 @@
         <div class="contact-hub-card">
           <div class="ambient-glow glow-contact"></div>
           <div class="section-badge-wrapper">
-            <span class="section-badge">&#128236; Contact</span>
+            <span class="section-badge">Direct Communication</span>
           </div>
           <h2 class="section-title">Ready to Connect?</h2>
           <p class="contact-desc">

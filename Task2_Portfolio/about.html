@@ -14,38 +14,30 @@
         <span class="logo-bracket">&lt;</span>Ankush<span class="logo-accent">.dev</span><span class="logo-bracket"> /&gt;</span>
       </a>
 
-      <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-label="Toggle Navigation">
-      <label for="nav-toggle" class="nav-toggle-btn">
-        <span></span>
-        <span></span>
-        <span></span>
-      </label>
-
-      <nav class="nav-menu">
-        <a href="index.html" class="nav-link">
-          <span class="nav-icon">&#127968;</span>
-          <span>Home</span>
+      <nav class="nav-dock">
+        <a href="index.html" class="nav-btn" aria-label="Home">
+          <svg class="nav-svg" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+          <span class="nav-tooltip">Home</span>
         </a>
-        <a href="about.html" class="nav-link active">
-          <span class="nav-icon">&#128100;</span>
-          <span>About</span>
+        <a href="about.html" class="nav-btn active" aria-label="About">
+          <svg class="nav-svg" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+          <span class="nav-tooltip">About</span>
         </a>
-        <a href="skills.html" class="nav-link">
-          <span class="nav-icon">&#9889;</span>
-          <span>Skills</span>
+        <a href="skills.html" class="nav-btn" aria-label="Skills">
+          <svg class="nav-svg" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+          <span class="nav-tooltip">Skills</span>
         </a>
-        <a href="projects.html" class="nav-link">
-          <span class="nav-icon">&#128640;</span>
-          <span>Projects</span>
+        <a href="projects.html" class="nav-btn" aria-label="Projects">
+          <svg class="nav-svg" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+          <span class="nav-tooltip">Projects</span>
         </a>
-        <a href="contact.html" class="nav-link">
-          <span class="nav-icon">&#128236;</span>
-          <span>Contact</span>
+        <a href="contact.html" class="nav-btn" aria-label="Contact">
+          <svg class="nav-svg" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+          <span class="nav-tooltip">Contact</span>
         </a>
-        <a href="contact.html" class="btn btn-primary nav-cta-mobile">Let's Connect</a>
       </nav>
 
-      <a href="contact.html" class="btn btn-primary nav-cta-desktop">Let's Connect</a>
+      <a href="contact.html" class="btn btn-primary nav-cta">Let's Connect</a>
     </div>
   </header>
 
@@ -54,7 +46,7 @@
       <div class="ambient-glow glow-1"></div>
       <div class="container">
         <div class="section-badge-wrapper">
-          <span class="section-badge">&#128100; Profile &amp; Background</span>
+          <span class="section-badge">Profile &amp; Background</span>
         </div>
         <h1 class="page-title">About Ankush Kumar</h1>
         <p class="page-subtitle">
@@ -81,7 +73,9 @@
 
           <div class="about-cards-side">
             <div class="info-glass-card">
-              <div class="info-icon">&#127891;</div>
+              <div class="info-svg-box">
+                <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>
+              </div>
               <div class="info-content">
                 <span class="info-label">Degree</span>
                 <strong class="info-title">B.Tech / B.E. in Computer Science</strong>
@@ -90,7 +84,9 @@
             </div>
 
             <div class="info-glass-card">
-              <div class="info-icon">&#128188;</div>
+              <div class="info-svg-box">
+                <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+              </div>
               <div class="info-content">
                 <span class="info-label">Internship</span>
                 <strong class="info-title">Oasis Infobyte (OIBSIP)</strong>
@@ -99,7 +95,9 @@
             </div>
 
             <div class="info-glass-card">
-              <div class="info-icon">&#127757;</div>
+              <div class="info-svg-box">
+                <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+              </div>
               <div class="info-content">
                 <span class="info-label">Location &amp; Work Mode</span>
                 <strong class="info-title">India &bull; Open for Remote</strong>
@@ -111,14 +109,16 @@
 
         <div class="principles-box">
           <div class="section-badge-wrapper">
-            <span class="section-badge">&#127919; Core Values</span>
+            <span class="section-badge">Core Values</span>
           </div>
           <h2 class="section-title">Development Principles</h2>
 
           <div class="skills-grid">
             <div class="skill-category-card">
               <div class="category-header">
-                <span class="category-icon">&#9878;</span>
+                <div class="cat-svg-box">
+                  <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+                </div>
                 <h3 class="category-title">Semantic Cleanliness</h3>
               </div>
               <p class="about-text">
@@ -128,7 +128,9 @@
 
             <div class="skill-category-card">
               <div class="category-header">
-                <span class="category-icon">&#128241;</span>
+                <div class="cat-svg-box">
+                  <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+                </div>
                 <h3 class="category-title">Responsive By Default</h3>
               </div>
               <p class="about-text">
@@ -138,7 +140,9 @@
 
             <div class="skill-category-card">
               <div class="category-header">
-                <span class="category-icon">&#9889;</span>
+                <div class="cat-svg-box">
+                  <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                </div>
                 <h3 class="category-title">Performance &amp; Simplicity</h3>
               </div>
               <p class="about-text">
