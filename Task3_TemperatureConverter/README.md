@@ -73,6 +73,8 @@ Task3_TemperatureConverter/
 ├── index.html       # Semantic HTML5 structure & accessibility attributes
 ├── style.css        # Modern glassmorphism stylesheet & responsive queries
 ├── script.js        # Vanilla JS conversion engine, visualizer & event handlers
+├── profile.jpg      # Developer portrait avatar
+├── logo.png         # Brand favicon & monogram logo
 └── README.md        # Technical documentation & formulas reference
 ```
 

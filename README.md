@@ -63,6 +63,8 @@ OIBSIP/
     ├── index.html                # Semantic interface with visualizer & benchmark table
     ├── style.css                 # Dynamic thermal glassmorphism stylesheet
     ├── script.js                 # 4-Scale conversion engine & reactive thermal aura
+    ├── profile.jpg               # Developer portrait avatar
+    ├── logo.png                  # Brand favicon & monogram logo
     └── README.md                 # Technical documentation & formulas reference
 ```
 
