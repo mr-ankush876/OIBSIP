@@ -59,13 +59,10 @@ OIBSIP/
 │   ├── profile.jpg               # Professional high-res portrait headshot
 │   └── README.md                 # Technical documentation
 │
-└── Task3_TemperatureConverter/   # Task 3: Precision Thermodynamic Converter
-    ├── index.html                # Semantic interface with visualizer & benchmark table
-    ├── style.css                 # Dynamic thermal glassmorphism stylesheet
-    ├── script.js                 # 4-Scale conversion engine & reactive thermal aura
-    ├── profile.jpg               # Developer portrait avatar
-    ├── logo.png                  # Brand favicon & monogram logo
-    └── README.md                 # Technical documentation & formulas reference
+└── Task3_TemperatureConverter/   # Task 3: TempConvert Web Application
+    ├── index.html                # Semantic HTML5 application structure
+    ├── style.css                 # Responsive stylesheet with light/dark theme system
+    └── script.js                 # Pure vanilla JS conversion engine & session history
 ```
 
 ---

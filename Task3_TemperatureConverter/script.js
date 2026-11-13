@@ -1,336 +1,447 @@
-(function () {
-  'use strict';
+'use strict';
 
+(function () {
+  const form = document.getElementById('converterForm');
   const tempInput = document.getElementById('tempInput');
   const fromUnit = document.getElementById('fromUnit');
-  const toUnit = document.getElementById('toUnit');
-  const tempSlider = document.getElementById('tempSlider');
-  const sliderValuePreview = document.getElementById('sliderValuePreview');
-  const sliderMinLabel = document.getElementById('sliderMinLabel');
-  const sliderMidLabel = document.getElementById('sliderMidLabel');
-  const sliderMaxLabel = document.getElementById('sliderMaxLabel');
-  const swapBtn = document.getElementById('swapBtn');
+  const swapUnitBtn = document.getElementById('swapUnitBtn');
   const resetBtn = document.getElementById('resetBtn');
+  const activeUnitBadge = document.getElementById('activeUnitBadge');
+  const errorBanner = document.getElementById('errorBanner');
+  const themeToggle = document.getElementById('themeToggle');
 
-  const sourceUnitBadge = document.getElementById('sourceUnitBadge');
-  const inputLimitTip = document.getElementById('inputLimitTip');
-  const resultValue = document.getElementById('resultValue');
-  const resultUnitLabel = document.getElementById('resultUnitLabel');
-  const formulaText = document.getElementById('formulaText');
+  const celsiusCard = document.getElementById('celsiusCard');
+  const fahrenheitCard = document.getElementById('fahrenheitCard');
+  const kelvinCard = document.getElementById('kelvinCard');
 
-  const thermalTag = document.getElementById('thermalTag');
-  const thermalIcon = document.getElementById('thermalIcon');
-  const thermalTitle = document.getElementById('thermalTitle');
-  const thermalCelsiusEquiv = document.getElementById('thermalCelsiusEquiv');
-  const gaugeNeedle = document.getElementById('gaugeNeedle');
-  const dynamicGlow = document.getElementById('dynamicGlow');
+  const celsiusValue = document.getElementById('celsiusValue');
+  const fahrenheitValue = document.getElementById('fahrenheitValue');
+  const kelvinValue = document.getElementById('kelvinValue');
 
-  const matrixValC = document.getElementById('matrixValC');
-  const matrixValF = document.getElementById('matrixValF');
-  const matrixValK = document.getElementById('matrixValK');
-  const matrixValR = document.getElementById('matrixValR');
-  const matrixItems = {
-    C: document.getElementById('matrixC'),
-    F: document.getElementById('matrixF'),
-    K: document.getElementById('matrixK'),
-    R: document.getElementById('matrixR')
-  };
-  const roleTags = {
-    C: document.getElementById('roleC'),
-    F: document.getElementById('roleF'),
-    K: document.getElementById('roleK'),
-    R: document.getElementById('roleR')
-  };
+  const celsiusFormula = document.getElementById('celsiusFormula');
+  const fahrenheitFormula = document.getElementById('fahrenheitFormula');
+  const kelvinFormula = document.getElementById('kelvinFormula');
 
-  const presetChips = document.querySelectorAll('.preset-chip');
-  const copyResultBtn = document.getElementById('copyResultBtn');
-  const copyBtnText = document.getElementById('copyBtnText');
-  const toastNotification = document.getElementById('toastNotification');
-  const toastMessage = document.getElementById('toastMessage');
+  const celsiusBadge = document.getElementById('celsiusBadge');
+  const fahrenheitBadge = document.getElementById('fahrenheitBadge');
+  const kelvinBadge = document.getElementById('kelvinBadge');
+
+  const copyCelsiusBtn = document.getElementById('copyCelsiusBtn');
+  const copyFahrenheitBtn = document.getElementById('copyFahrenheitBtn');
+  const copyKelvinBtn = document.getElementById('copyKelvinBtn');
+
+  const historyList = document.getElementById('historyList');
+  const historyEmpty = document.getElementById('historyEmpty');
+  const clearHistoryBtn = document.getElementById('clearHistoryBtn');
+  const toast = document.getElementById('toast');
+
+  let toastTimeout = null;
+  const HISTORY_STORAGE_KEY = 'tempconvert_history';
+  const THEME_STORAGE_KEY = 'tempconvert_theme';
 
   const UNIT_SYMBOLS = {
     C: '°C',
     F: '°F',
-    K: 'K',
-    R: '°R'
+    K: 'K'
   };
 
-  const SLIDER_BOUNDS = {
-    C: { min: -100, max: 200, step: 0.5, mid: 50, tip: 'Range: −273.15 °C +' },
-    F: { min: -148, max: 392, step: 1, mid: 122, tip: 'Range: −459.67 °F +' },
-    K: { min: 0, max: 500, step: 1, mid: 250, tip: 'Range: 0 K +' },
-    R: { min: 0, max: 900, step: 1, mid: 450, tip: 'Range: 0 °R +' }
+  const ABSOLUTE_ZERO = {
+    C: -273.15,
+    F: -459.67,
+    K: 0
   };
 
-  function toKelvin(value, unit) {
-    switch (unit) {
-      case 'C': return value + 273.15;
-      case 'F': return (value - 32) * (5 / 9) + 273.15;
-      case 'K': return value;
-      case 'R': return value * (5 / 9);
-      default: return value;
-    }
-  }
-
-  function fromKelvin(kelvin, targetUnit) {
-    switch (targetUnit) {
-      case 'C': return kelvin - 273.15;
-      case 'F': return (kelvin - 273.15) * (9 / 5) + 32;
-      case 'K': return kelvin;
-      case 'R': return kelvin * (9 / 5);
-      default: return kelvin;
-    }
-  }
-
-  function formatPrecision(num) {
-    if (!isFinite(num)) return 'Invalid';
-    if (Math.abs(num) >= 1e6 || (Math.abs(num) < 0.001 && num !== 0)) {
-      return num.toExponential(3);
-    }
-    const fixed = num.toFixed(2);
-    return fixed.endsWith('.00') ? num.toFixed(0) : fixed;
-  }
-
-  function generateFormula(val, from, to, res) {
-    if (from === to) {
-      return `${val} ${UNIT_SYMBOLS[from]} = ${res} ${UNIT_SYMBOLS[to]} (Identical Unit)`;
-    }
-
-    if (from === 'C' && to === 'F') return `(${val} °C × 9/5) + 32 = ${res} °F`;
-    if (from === 'F' && to === 'C') return `(${val} °F − 32) × 5/9 = ${res} °C`;
-    if (from === 'C' && to === 'K') return `${val} °C + 273.15 = ${res} K`;
-    if (from === 'K' && to === 'C') return `${val} K − 273.15 = ${res} °C`;
-    if (from === 'F' && to === 'K') return `(${val} °F − 32) × 5/9 + 273.15 = ${res} K`;
-    if (from === 'K' && to === 'F') return `(${val} K − 273.15) × 9/5 + 32 = ${res} °F`;
-    if (from === 'C' && to === 'R') return `(${val} °C + 273.15) × 9/5 = ${res} °R`;
-    if (from === 'R' && to === 'C') return `(${val} °R − 491.67) × 5/9 = ${res} °C`;
-    if (from === 'F' && to === 'R') return `${val} °F + 459.67 = ${res} °R`;
-    if (from === 'R' && to === 'F') return `${val} °R − 459.67 = ${res} °F`;
-    if (from === 'K' && to === 'R') return `${val} K × 1.8 = ${res} °R`;
-    if (from === 'R' && to === 'K') return `${val} °R ÷ 1.8 = ${res} K`;
-
-    return `${val} ${UNIT_SYMBOLS[from]} → ${res} ${UNIT_SYMBOLS[to]}`;
-  }
-
-  function updateThermalVisuals(celsiusVal) {
-    let accent, glow, icon, title;
-
-    if (celsiusVal < 0) {
-      accent = '#38bdf8';
-      glow = 'rgba(56, 189, 248, 0.35)';
-      icon = '❄️';
-      title = 'Sub-Zero Freezing Condition';
-    } else if (celsiusVal <= 18) {
-      accent = '#2dd4bf';
-      glow = 'rgba(45, 212, 191, 0.35)';
-      icon = '🍃';
-      title = 'Cool Ambient Range';
-    } else if (celsiusVal <= 27) {
-      accent = '#10b981';
-      glow = 'rgba(16, 185, 129, 0.35)';
-      icon = '🌿';
-      title = 'Comfortable Room Environment';
-    } else if (celsiusVal <= 45) {
-      accent = '#f59e0b';
-      glow = 'rgba(245, 158, 11, 0.35)';
-      icon = '☀️';
-      title = 'High Heat / Summer Range';
-    } else if (celsiusVal <= 99) {
-      accent = '#f97316';
-      glow = 'rgba(249, 115, 22, 0.35)';
-      icon = '🔥';
-      title = 'Extreme Heat / Scalding Level';
+  function initTheme() {
+    const savedTheme = localStorage.getItem(THEME_STORAGE_KEY);
+    if (savedTheme) {
+      document.documentElement.setAttribute('data-theme', savedTheme);
     } else {
-      accent = '#ef4444';
-      glow = 'rgba(239, 68, 68, 0.4)';
-      icon = '♨️';
-      title = 'Boiling Point / Superheated Vapor';
-    }
-
-    document.documentElement.style.setProperty('--thermal-accent', accent);
-    document.documentElement.style.setProperty('--thermal-glow', glow);
-
-    thermalIcon.textContent = icon;
-    thermalTitle.textContent = title;
-    thermalCelsiusEquiv.textContent = `${formatPrecision(celsiusVal)} °C equivalent`;
-
-    const gaugeMin = -50;
-    const gaugeMax = 150;
-    let percentage = ((celsiusVal - gaugeMin) / (gaugeMax - gaugeMin)) * 100;
-    percentage = Math.max(2, Math.min(98, percentage));
-    gaugeNeedle.style.left = `${percentage}%`;
-
-    if (dynamicGlow) {
-      dynamicGlow.style.background = `radial-gradient(circle, ${glow}, transparent 70%)`;
+      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
     }
   }
 
-  function updateSliderBounds(unit) {
-    const cfg = SLIDER_BOUNDS[unit] || SLIDER_BOUNDS.C;
-    tempSlider.min = cfg.min;
-    tempSlider.max = cfg.max;
-    tempSlider.step = cfg.step;
-    sliderMinLabel.textContent = `${cfg.min}°`;
-    sliderMidLabel.textContent = `${cfg.mid}°`;
-    sliderMaxLabel.textContent = `${cfg.max}°`;
-    inputLimitTip.textContent = cfg.tip;
+  function toggleTheme() {
+    const current = document.documentElement.getAttribute('data-theme') || 'dark';
+    const next = current === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem(THEME_STORAGE_KEY, next);
   }
 
-  function calculate() {
-    const rawVal = parseFloat(tempInput.value);
-    const sourceUnit = fromUnit.value;
-    const targetUnit = toUnit.value;
-
-    sourceUnitBadge.textContent = UNIT_SYMBOLS[sourceUnit];
-    resultUnitLabel.textContent = UNIT_SYMBOLS[targetUnit];
-
-    if (isNaN(rawVal)) {
-      resultValue.textContent = '---';
-      formulaText.textContent = 'Please enter a valid numeric temperature value.';
-      return;
+  function showToast(message) {
+    if (toastTimeout) {
+      clearTimeout(toastTimeout);
     }
+    toast.textContent = message;
+    toast.classList.add('show');
+    toastTimeout = setTimeout(() => {
+      toast.classList.remove('show');
+    }, 2200);
+  }
 
-    const kelvinVal = toKelvin(rawVal, sourceUnit);
+  function updateActiveBadge() {
+    activeUnitBadge.innerHTML = UNIT_SYMBOLS[fromUnit.value] || '&deg;C';
+  }
 
-    if (kelvinVal < 0) {
-      resultValue.textContent = 'Below 0 K';
-      formulaText.textContent = 'Warning: Thermodynamic temperature cannot drop below Absolute Zero (0 Kelvin).';
-      updateThermalVisuals(-273.15);
-      return;
-    }
+  function showError(msg) {
+    errorBanner.textContent = msg;
+    errorBanner.classList.add('show');
+    tempInput.classList.add('is-invalid');
+  }
 
-    const convertedVal = fromKelvin(kelvinVal, targetUnit);
-    const formattedResult = formatPrecision(convertedVal);
-    resultValue.textContent = formattedResult;
+  function clearError() {
+    errorBanner.textContent = '';
+    errorBanner.classList.remove('show');
+    tempInput.classList.remove('is-invalid');
+  }
 
-    const formattedInput = formatPrecision(rawVal);
-    formulaText.textContent = generateFormula(formattedInput, sourceUnit, targetUnit, formattedResult);
-
-    const celsiusVal = fromKelvin(kelvinVal, 'C');
-    updateThermalVisuals(celsiusVal);
-
-    sliderValuePreview.textContent = `${formattedInput} ${UNIT_SYMBOLS[sourceUnit]}`;
-    if (rawVal >= parseFloat(tempSlider.min) && rawVal <= parseFloat(tempSlider.max)) {
-      tempSlider.value = rawVal;
-    }
-
-    const allScales = {
-      C: fromKelvin(kelvinVal, 'C'),
-      F: fromKelvin(kelvinVal, 'F'),
-      K: kelvinVal,
-      R: fromKelvin(kelvinVal, 'R')
-    };
-
-    matrixValC.textContent = `${formatPrecision(allScales.C)} °C`;
-    matrixValF.textContent = `${formatPrecision(allScales.F)} °F`;
-    matrixValK.textContent = `${formatPrecision(allScales.K)} K`;
-    matrixValR.textContent = `${formatPrecision(allScales.R)} °R`;
-
-    ['C', 'F', 'K', 'R'].forEach((u) => {
-      const item = matrixItems[u];
-      const role = roleTags[u];
-      item.classList.remove('active-target', 'source-unit');
-
-      if (u === sourceUnit) {
-        item.classList.add('source-unit');
-        role.textContent = 'Source';
-      } else if (u === targetUnit) {
-        item.classList.add('active-target');
-        role.textContent = 'Target';
-      } else {
-        role.textContent = 'Output';
-      }
+  function formatDisplay(num) {
+    const rounded = Math.round((num + Number.EPSILON) * 100) / 100;
+    return rounded.toLocaleString('en-US', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
     });
   }
 
-  tempInput.addEventListener('input', () => {
-    presetChips.forEach(c => c.classList.remove('active'));
-    calculate();
+  function validateInput(rawStr, unit) {
+    if (!rawStr || rawStr.trim() === '') {
+      return { valid: false, error: 'Please enter a temperature value to convert.' };
+    }
+
+    const val = Number(rawStr);
+    if (!isFinite(val) || isNaN(val)) {
+      return { valid: false, error: 'Please enter a valid numerical temperature.' };
+    }
+
+    const minAllowed = ABSOLUTE_ZERO[unit];
+    if (val < minAllowed) {
+      const symbol = UNIT_SYMBOLS[unit];
+      return {
+        valid: false,
+        error: `Value cannot drop below Absolute Zero (${minAllowed} ${symbol} / 0 K).`
+      };
+    }
+
+    return { valid: true, value: val };
+  }
+
+  function convertTemperatures(val, unit) {
+    let c, f, k;
+
+    if (unit === 'C') {
+      c = val;
+      f = (val * 9) / 5 + 32;
+      k = val + 273.15;
+    } else if (unit === 'F') {
+      c = ((val - 32) * 5) / 9;
+      f = val;
+      k = ((val - 32) * 5) / 9 + 273.15;
+    } else if (unit === 'K') {
+      c = val - 273.15;
+      f = ((val - 273.15) * 9) / 5 + 32;
+      k = val;
+    }
+
+    return { c, f, k };
+  }
+
+  function generateFormulas(val, unit, c, f, k) {
+    const vStr = formatDisplay(val);
+    const cStr = formatDisplay(c);
+    const fStr = formatDisplay(f);
+    const kStr = formatDisplay(k);
+
+    if (unit === 'C') {
+      return {
+        c: `Original input (${vStr} °C)`,
+        f: `(${vStr} × 9/5) + 32 = ${fStr} °F`,
+        k: `${vStr} + 273.15 = ${kStr} K`
+      };
+    }
+    if (unit === 'F') {
+      return {
+        c: `(${vStr} − 32) × 5/9 = ${cStr} °C`,
+        f: `Original input (${vStr} °F)`,
+        k: `(${vStr} − 32) × 5/9 + 273.15 = ${kStr} K`
+      };
+    }
+    return {
+      c: `${vStr} − 273.15 = ${cStr} °C`,
+      f: `(${vStr} − 273.15) × 9/5 + 32 = ${fStr} °F`,
+      k: `Original input (${vStr} K)`
+    };
+  }
+
+  function renderResults(val, unit, results, formulas) {
+    const cText = `${formatDisplay(results.c)} °C`;
+    const fText = `${formatDisplay(results.f)} °F`;
+    const kText = `${formatDisplay(results.k)} K`;
+
+    celsiusValue.textContent = cText;
+    fahrenheitValue.textContent = fText;
+    kelvinValue.textContent = kText;
+
+    celsiusFormula.textContent = formulas.c;
+    fahrenheitFormula.textContent = formulas.f;
+    kelvinFormula.textContent = formulas.k;
+
+    celsiusCard.classList.remove('is-source');
+    fahrenheitCard.classList.remove('is-source');
+    kelvinCard.classList.remove('is-source');
+
+    celsiusBadge.textContent = 'Converted';
+    fahrenheitBadge.textContent = 'Converted';
+    kelvinBadge.textContent = 'Converted';
+
+    if (unit === 'C') {
+      celsiusCard.classList.add('is-source');
+      celsiusBadge.textContent = 'Input';
+    } else if (unit === 'F') {
+      fahrenheitCard.classList.add('is-source');
+      fahrenheitBadge.textContent = 'Input';
+    } else if (unit === 'K') {
+      kelvinCard.classList.add('is-source');
+      kelvinBadge.textContent = 'Input';
+    }
+  }
+
+  function resetResults() {
+    celsiusValue.textContent = '---';
+    fahrenheitValue.textContent = '---';
+    kelvinValue.textContent = '---';
+
+    celsiusFormula.textContent = 'Awaiting conversion input';
+    fahrenheitFormula.textContent = 'Awaiting conversion input';
+    kelvinFormula.textContent = 'Awaiting conversion input';
+
+    celsiusCard.classList.remove('is-source');
+    fahrenheitCard.classList.remove('is-source');
+    kelvinCard.classList.remove('is-source');
+
+    celsiusBadge.textContent = 'Target';
+    fahrenheitBadge.textContent = 'Target';
+    kelvinBadge.textContent = 'Target';
+  }
+
+  function loadHistory() {
+    try {
+      const data = sessionStorage.getItem(HISTORY_STORAGE_KEY);
+      return data ? JSON.parse(data) : [];
+    } catch {
+      return [];
+    }
+  }
+
+  function saveHistory(list) {
+    try {
+      sessionStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(list.slice(0, 5)));
+    } catch {}
+  }
+
+  function renderHistory() {
+    const list = loadHistory();
+    historyList.innerHTML = '';
+
+    if (!list || list.length === 0) {
+      historyEmpty.style.display = 'block';
+      clearHistoryBtn.style.display = 'none';
+      return;
+    }
+
+    historyEmpty.style.display = 'none';
+    clearHistoryBtn.style.display = 'inline-block';
+
+    list.forEach((item, index) => {
+      const row = document.createElement('div');
+      row.className = 'history-item';
+      row.tabIndex = 0;
+      row.setAttribute('role', 'button');
+      row.setAttribute('aria-label', `Reload ${item.inputStr} ${UNIT_SYMBOLS[item.unit]}`);
+
+      const left = document.createElement('div');
+      left.className = 'history-expression';
+      left.innerHTML = `<span>${item.inputStr} ${UNIT_SYMBOLS[item.unit]}</span> <span class="history-arrow">&rarr;</span> <span class="history-outputs">${item.cStr} &bull; ${item.fStr} &bull; ${item.kStr}</span>`;
+
+      const right = document.createElement('span');
+      right.className = 'history-meta';
+      right.textContent = item.time;
+
+      row.appendChild(left);
+      row.appendChild(right);
+
+      const reload = () => {
+        tempInput.value = item.inputStr;
+        fromUnit.value = item.unit;
+        updateActiveBadge();
+        clearError();
+        performConversion();
+        showToast(`Loaded ${item.inputStr} ${UNIT_SYMBOLS[item.unit]}`);
+      };
+
+      row.addEventListener('click', reload);
+      row.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          reload();
+        }
+      });
+
+      historyList.appendChild(row);
+    });
+  }
+
+  function addHistoryItem(val, unit, results) {
+    const list = loadHistory();
+    const now = new Date();
+    const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+
+    const item = {
+      inputStr: formatDisplay(val),
+      unit: unit,
+      cStr: `${formatDisplay(results.c)} °C`,
+      fStr: `${formatDisplay(results.f)} °F`,
+      kStr: `${formatDisplay(results.k)} K`,
+      time: timeStr
+    };
+
+    list.unshift(item);
+    saveHistory(list);
+    renderHistory();
+  }
+
+  function performConversion() {
+    clearError();
+    const raw = tempInput.value;
+    const unit = fromUnit.value;
+
+    const validation = validateInput(raw, unit);
+    if (!validation.valid) {
+      showError(validation.error);
+      resetResults();
+      return false;
+    }
+
+    const val = validation.value;
+    const results = convertTemperatures(val, unit);
+    const formulas = generateFormulas(val, unit, results.c, results.f, results.k);
+
+    renderResults(val, unit, results, formulas);
+    addHistoryItem(val, unit, results);
+    return true;
+  }
+
+  function cycleUnit() {
+    const current = fromUnit.value;
+    if (current === 'C') {
+      fromUnit.value = 'F';
+    } else if (current === 'F') {
+      fromUnit.value = 'K';
+    } else {
+      fromUnit.value = 'C';
+    }
+    updateActiveBadge();
+    clearError();
+    if (tempInput.value.trim() !== '') {
+      performConversion();
+    }
+  }
+
+  function handleReset() {
+    tempInput.value = '';
+    fromUnit.value = 'C';
+    updateActiveBadge();
+    clearError();
+    resetResults();
+    tempInput.focus();
+    showToast('Reset converter to empty state');
+  }
+
+  function handleCopy(button, valueElement) {
+    const textToCopy = valueElement.textContent.trim();
+    if (!textToCopy || textToCopy === '---') {
+      showToast('No converted value to copy');
+      return;
+    }
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(textToCopy).then(() => {
+        button.classList.add('copied');
+        const label = button.querySelector('.copy-label');
+        if (label) label.textContent = 'Copied!';
+        showToast(`Copied ${textToCopy} to clipboard`);
+        setTimeout(() => {
+          button.classList.remove('copied');
+          if (label) label.textContent = 'Copy';
+        }, 1800);
+      }).catch(() => {
+        fallbackCopy(textToCopy, button);
+      });
+    } else {
+      fallbackCopy(textToCopy, button);
+    }
+  }
+
+  function fallbackCopy(text, button) {
+    const textArea = document.createElement('textarea');
+    textArea.value = text;
+    textArea.style.position = 'fixed';
+    textArea.style.opacity = '0';
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    try {
+      document.execCommand('copy');
+      button.classList.add('copied');
+      const label = button.querySelector('.copy-label');
+      if (label) label.textContent = 'Copied!';
+      showToast(`Copied ${text} to clipboard`);
+      setTimeout(() => {
+        button.classList.remove('copied');
+        if (label) label.textContent = 'Copy';
+      }, 1800);
+    } catch {
+      showToast(`Value: ${text}`);
+    }
+    document.body.removeChild(textArea);
+  }
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    performConversion();
   });
 
-  tempSlider.addEventListener('input', (e) => {
-    tempInput.value = e.target.value;
-    presetChips.forEach(c => c.classList.remove('active'));
-    calculate();
+  tempInput.addEventListener('input', () => {
+    if (errorBanner.classList.contains('show')) {
+      const validation = validateInput(tempInput.value, fromUnit.value);
+      if (validation.valid) {
+        clearError();
+      }
+    }
   });
 
   fromUnit.addEventListener('change', () => {
-    updateSliderBounds(fromUnit.value);
-    presetChips.forEach(c => c.classList.remove('active'));
-    calculate();
-  });
-
-  toUnit.addEventListener('change', () => {
-    calculate();
-  });
-
-  swapBtn.addEventListener('click', () => {
-    const currentFrom = fromUnit.value;
-    const currentTo = toUnit.value;
-
-    const currentResult = parseFloat(resultValue.textContent);
-
-    fromUnit.value = currentTo;
-    toUnit.value = currentFrom;
-    updateSliderBounds(toUnit.value);
-
-    if (!isNaN(currentResult)) {
-      tempInput.value = currentResult;
-    }
-
-    presetChips.forEach(c => c.classList.remove('active'));
-    calculate();
-  });
-
-  resetBtn.addEventListener('click', () => {
-    fromUnit.value = 'C';
-    toUnit.value = 'F';
-    updateSliderBounds('C');
-    tempInput.value = '25';
-    presetChips.forEach(c => c.classList.remove('active'));
-    calculate();
-    showToast('Reset to standard room temperature (25 °C / 77 °F)');
-  });
-
-  presetChips.forEach((chip) => {
-    chip.addEventListener('click', () => {
-      presetChips.forEach(c => c.classList.remove('active'));
-      chip.classList.add('active');
-
-      const presetTemp = parseFloat(chip.getAttribute('data-temp'));
-      fromUnit.value = 'C';
-      updateSliderBounds('C');
-      tempInput.value = presetTemp;
-      calculate();
-
-      showToast(`Loaded preset: ${chip.querySelector('.preset-name').textContent}`);
-    });
-  });
-
-  let toastTimer = null;
-  function showToast(message) {
-    if (toastTimer) clearTimeout(toastTimer);
-    toastMessage.textContent = message;
-    toastNotification.classList.add('show');
-    toastTimer = setTimeout(() => {
-      toastNotification.classList.remove('show');
-    }, 2800);
-  }
-
-  copyResultBtn.addEventListener('click', async () => {
-    const resText = `${resultValue.textContent} ${resultUnitLabel.textContent}`;
-    try {
-      await navigator.clipboard.writeText(resText);
-      copyBtnText.textContent = 'Copied!';
-      showToast(`Copied ${resText} to clipboard!`);
-      setTimeout(() => {
-        copyBtnText.textContent = 'Copy';
-      }, 2000);
-    } catch {
-      showToast(`Result: ${resText}`);
+    updateActiveBadge();
+    clearError();
+    if (tempInput.value.trim() !== '') {
+      performConversion();
     }
   });
 
-  updateSliderBounds('C');
-  calculate();
+  swapUnitBtn.addEventListener('click', cycleUnit);
+  resetBtn.addEventListener('click', handleReset);
+  themeToggle.addEventListener('click', toggleTheme);
+
+  clearHistoryBtn.addEventListener('click', () => {
+    sessionStorage.removeItem(HISTORY_STORAGE_KEY);
+    renderHistory();
+    showToast('Conversion history cleared');
+  });
+
+  copyCelsiusBtn.addEventListener('click', () => handleCopy(copyCelsiusBtn, celsiusValue));
+  copyFahrenheitBtn.addEventListener('click', () => handleCopy(copyFahrenheitBtn, fahrenheitValue));
+  copyKelvinBtn.addEventListener('click', () => handleCopy(copyKelvinBtn, kelvinValue));
+
+  initTheme();
+  updateActiveBadge();
+  renderHistory();
 })();
