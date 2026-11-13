@@ -3,7 +3,26 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Contact Me | Ankush Kumar</title>
+  <title>Contact &amp; Connect | Ankush Kumar</title>
+  <meta name="description" content="Get in touch with Ankush Kumar for web development internships, junior software roles, or technical collaborations. Direct inquiry form, email, and social channels.">
+  <meta name="author" content="Ankush Kumar">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://ankush-kumar-task2.onrender.com/contact.html">
+  <link rel="icon" type="image/png" href="logo.png">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Ankush Kumar Portfolio">
+  <meta property="og:title" content="Contact Ankush Kumar | Direct Communication &amp; Inquiries">
+  <meta property="og:description" content="Send a direct message or connect via email, LinkedIn, or GitHub for developer opportunities.">
+  <meta property="og:url" content="https://ankush-kumar-task2.onrender.com/contact.html">
+  <meta property="og:image" content="https://ankush-kumar-task2.onrender.com/profile.jpg">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Contact Ankush Kumar | Web Developer">
+  <meta name="twitter:description" content="Get in touch with Ankush Kumar for developer opportunities and technical inquiries.">
+  <meta name="twitter:image" content="https://ankush-kumar-task2.onrender.com/profile.jpg">
+  <meta name="twitter:creator" content="@ankushraj_singh">
+
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -11,7 +30,7 @@
   <header class="header">
     <div class="container nav-container">
       <a href="index.html" class="brand-logo" aria-label="Ankush Kumar">
-        <img src="logo.png" alt="AK Logo" class="brand-logo-img">
+        <img src="logo.png" alt="AK Logo" class="brand-logo-img" width="44" height="44">
       </a>
 
       <nav class="nav-dock">
@@ -62,36 +81,43 @@
             <h2 class="content-heading">Send a Direct Message</h2>
             <p class="form-subtext">Fill in the fields below and I will respond to your inquiry promptly.</p>
 
-            <form action="#" method="get" class="dev-form">
+            <form id="contactForm" action="https://formsubmit.co/kankush1907@gmail.com" method="POST" class="dev-form" novalidate>
+              <input type="hidden" name="_subject" value="New Portfolio Inquiry from Ankush Kumar's Website">
+              <input type="hidden" name="_captcha" value="false">
+              <input type="hidden" name="_template" value="table">
+              <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
+
+              <div id="formStatus" class="form-status" role="alert" aria-live="polite"></div>
+
               <div class="form-row">
                 <div class="form-group">
-                  <label for="name" class="form-label">Full Name</label>
-                  <input type="text" id="name" name="name" class="form-input" placeholder="e.g. Aditi Sharma" required>
+                  <label for="name" class="form-label">Full Name <span class="required-mark" aria-hidden="true">*</span></label>
+                  <input type="text" id="name" name="name" class="form-input" placeholder="e.g. Aditi Sharma" required autocomplete="name" minlength="2">
                 </div>
                 <div class="form-group">
-                  <label for="email" class="form-label">Email Address</label>
-                  <input type="email" id="email" name="email" class="form-input" placeholder="e.g. aditi@example.com" required>
+                  <label for="email" class="form-label">Email Address <span class="required-mark" aria-hidden="true">*</span></label>
+                  <input type="email" id="email" name="email" class="form-input" placeholder="e.g. aditi@example.com" required autocomplete="email" inputmode="email">
                 </div>
               </div>
 
               <div class="form-group">
                 <label for="subject" class="form-label">Inquiry Subject</label>
                 <select id="subject" name="subject" class="form-select">
-                  <option value="internship">Web Development Internship / Role</option>
-                  <option value="freelance">Freelance Web Design Project</option>
-                  <option value="collaboration">Open Source Collaboration</option>
-                  <option value="general">General Technical Question</option>
+                  <option value="Web Development Internship / Role">Web Development Internship / Role</option>
+                  <option value="Freelance Web Design Project">Freelance Web Design Project</option>
+                  <option value="Open Source Collaboration">Open Source Collaboration</option>
+                  <option value="General Technical Question">General Technical Question</option>
                 </select>
               </div>
 
               <div class="form-group">
-                <label for="message" class="form-label">Your Message</label>
-                <textarea id="message" name="message" class="form-textarea" rows="5" placeholder="Share your project requirements, team details, or thoughts..." required></textarea>
+                <label for="message" class="form-label">Your Message <span class="required-mark" aria-hidden="true">*</span></label>
+                <textarea id="message" name="message" class="form-textarea" rows="5" placeholder="Share your project requirements, team details, or thoughts..." required minlength="10"></textarea>
               </div>
 
-              <button type="submit" class="btn btn-primary btn-large btn-block">
-                <span>Submit Message</span>
-                <span class="btn-arrow">&rarr;</span>
+              <button type="submit" id="submitBtn" class="btn btn-primary btn-large btn-block">
+                <span id="btnText">Submit Message</span>
+                <span class="btn-arrow" aria-hidden="true">&rarr;</span>
               </button>
             </form>
           </div>
@@ -156,7 +182,7 @@
       <div class="footer-grid">
         <div class="footer-col-brand">
           <a href="index.html" class="footer-brand" aria-label="Ankush Kumar">
-            <img src="logo.png" alt="AK Logo" class="footer-logo-img">
+            <img src="logo.png" alt="AK Logo" class="footer-logo-img" width="44" height="44">
           </a>
           <p class="footer-bio">
             Web Developer passionate about high-performance responsive web applications, modern UI/UX design, and clean scalable architecture.
@@ -241,5 +267,107 @@
     </div>
   </footer>
 
+  <script>
+    (function () {
+      var form = document.getElementById('contactForm');
+      var statusBox = document.getElementById('formStatus');
+      var submitBtn = document.getElementById('submitBtn');
+      var btnText = document.getElementById('btnText');
+      var nameInput = document.getElementById('name');
+      var emailInput = document.getElementById('email');
+      var messageInput = document.getElementById('message');
+
+      function showStatus(type, message) {
+        statusBox.className = 'form-status show ' + type;
+        statusBox.innerHTML = message;
+        statusBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+
+      function clearErrors() {
+        statusBox.className = 'form-status';
+        statusBox.innerHTML = '';
+        var invalidInputs = form.querySelectorAll('.is-invalid');
+        for (var i = 0; i < invalidInputs.length; i++) {
+          invalidInputs[i].classList.remove('is-invalid');
+        }
+        var errorMsgs = form.querySelectorAll('.field-error');
+        for (var j = 0; j < errorMsgs.length; j++) {
+          errorMsgs[j].remove();
+        }
+      }
+
+      function markInvalid(input, errorText) {
+        input.classList.add('is-invalid');
+        var err = document.createElement('span');
+        err.className = 'field-error';
+        err.textContent = errorText;
+        input.parentElement.appendChild(err);
+      }
+
+      if (form) {
+        form.addEventListener('submit', function (e) {
+          e.preventDefault();
+          clearErrors();
+
+          var isValid = true;
+          var nameVal = nameInput.value.trim();
+          var emailVal = emailInput.value.trim();
+          var messageVal = messageInput.value.trim();
+
+          if (nameVal.length < 2) {
+            markInvalid(nameInput, 'Please enter your full name (minimum 2 characters).');
+            isValid = false;
+          }
+
+          var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          if (!emailPattern.test(emailVal)) {
+            markInvalid(emailInput, 'Please enter a valid email address (e.g. name@domain.com).');
+            isValid = false;
+          }
+
+          if (messageVal.length < 10) {
+            markInvalid(messageInput, 'Please write a message with at least 10 characters.');
+            isValid = false;
+          }
+
+          if (!isValid) {
+            showStatus('error', 'Please correct the highlighted fields before submitting.');
+            return;
+          }
+
+          submitBtn.disabled = true;
+          btnText.textContent = 'Sending Message...';
+          showStatus('loading', 'Sending your message securely to Ankush Kumar...');
+
+          var formData = new FormData(form);
+
+          fetch('https://formsubmit.co/ajax/kankush1907@gmail.com', {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json'
+            },
+            body: formData
+          })
+          .then(function (response) {
+            if (response.ok) {
+              return response.json();
+            }
+            throw new Error('Network response was not ok');
+          })
+          .then(function () {
+            showStatus('success', 'Thank you! Your message has been sent successfully. Ankush will respond to your email promptly.');
+            form.reset();
+          })
+          .catch(function () {
+            showStatus('error', 'Unable to send message via automated service. Please email Ankush directly at <a href="mailto:kankush1907@gmail.com" style="color:#00f0ff;text-decoration:underline;margin-left:4px;">kankush1907@gmail.com</a>.');
+          })
+          .finally(function () {
+            submitBtn.disabled = false;
+            btnText.textContent = 'Submit Message';
+          });
+        });
+      }
+    })();
+  </script>
 </body>
 </html>
