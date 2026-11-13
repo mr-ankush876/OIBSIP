@@ -36,6 +36,7 @@ OIBSIP/
 ├── .gitignore                    # Standard version control ignore rules
 ├── AnkushKumar_Task1.zip         # Verified submission archive for Task 1
 ├── AnkushKumar_Task2.zip         # Verified submission archive for Task 2
+├── AnkushKumar_Task3.zip         # Verified submission archive for Task 3
 │
 ├── Task1_LandingPage/            # Task 1: Artisan Specialty Coffee Landing Page
 │   ├── index.html                # Main landing page
@@ -46,15 +47,21 @@ OIBSIP/
 │   ├── contact.html              # Tasting room inquiry form & Bangalore address
 │   └── style.css                 # Warm artisan coffee stylesheet
 │
-└── Task2_Portfolio/              # Task 2: Advanced Personal Portfolio Website
-    ├── index.html                # Hero section with square portrait photo & stats
-    ├── about.html                # Academic background & engineering philosophy
-    ├── skills.html               # Frontend & core CS skills breakdown
-    ├── projects.html             # 8 authentic GitHub repositories showcase
-    ├── contact.html              # Interactive inquiry form & direct channels
-    ├── style.css                 # Dark mesh glassmorphism stylesheet
-    ├── logo.png                  # Cropped geometric "AK" monogram logo
-    └── profile.jpg               # Professional high-res portrait headshot
+├── Task2_Portfolio/              # Task 2: Advanced Personal Portfolio Website
+│   ├── index.html                # Hero section with square portrait photo & stats
+│   ├── about.html                # Academic background & engineering philosophy
+│   ├── skills.html               # Frontend & core CS skills breakdown
+│   ├── projects.html             # 8 authentic GitHub repositories showcase
+│   ├── contact.html              # Interactive inquiry form & direct channels
+│   ├── style.css                 # Dark mesh glassmorphism stylesheet
+│   ├── logo.png                  # Cropped geometric "AK" monogram logo
+│   └── profile.jpg               # Professional high-res portrait headshot
+│
+└── Task3_TemperatureConverter/   # Task 3: Precision Thermodynamic Converter
+    ├── index.html                # Semantic interface with visualizer & benchmark table
+    ├── style.css                 # Dynamic thermal glassmorphism stylesheet
+    ├── script.js                 # 4-Scale conversion engine & reactive thermal aura
+    └── README.md                 # Technical documentation & formulas reference
 ```
 
 ---
@@ -83,7 +90,7 @@ OIBSIP/
   - Standalone geometric **"AK" monogram logo** in header and footer.
   - High-resolution, executive **square portrait photo** with an interactive "Open for Work" floating badge.
   - Sleek **icon-only navigation dock** with pure CSS hover tooltips.
-  - Showcases all 8 genuine GitHub projects from `mr-ankush876` with direct links (excluding `NJK12`).
+  - Showcases 7 genuine GitHub repositories developed by `mr-ankush876` with verified direct links (excluding portfolio self-reference).
   - Integrated **icon-only social dock** linking directly to GitHub, LinkedIn, X (Twitter), Instagram, and Facebook with brand hover glows.
   - 3-Column structured footer featuring direct contact email, phone, location address, and Back to Top navigation.
   - Strictly **zero comments** throughout all HTML and CSS files.
