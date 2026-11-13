@@ -45,17 +45,19 @@ OIBSIP/
 │   ├── blends.html               # 6 artisan blends catalog with INR (₹) pricing
 │   ├── reviews.html              # Customer ratings (4.9/5) & testimonials
 │   ├── contact.html              # Tasting room inquiry form & Bangalore address
-│   └── style.css                 # Warm artisan coffee stylesheet
+│   ├── style.css                 # Warm artisan coffee stylesheet
+│   └── README.md                 # Technical documentation
 │
 ├── Task2_Portfolio/              # Task 2: Advanced Personal Portfolio Website
 │   ├── index.html                # Hero section with square portrait photo & stats
 │   ├── about.html                # Academic background & engineering philosophy
 │   ├── skills.html               # Frontend & core CS skills breakdown
-│   ├── projects.html             # 8 authentic GitHub repositories showcase
+│   ├── projects.html             # 7 authentic GitHub repositories showcase
 │   ├── contact.html              # Interactive inquiry form & direct channels
 │   ├── style.css                 # Dark mesh glassmorphism stylesheet
 │   ├── logo.png                  # Cropped geometric "AK" monogram logo
-│   └── profile.jpg               # Professional high-res portrait headshot
+│   ├── profile.jpg               # Professional high-res portrait headshot
+│   └── README.md                 # Technical documentation
 │
 └── Task3_TemperatureConverter/   # Task 3: Precision Thermodynamic Converter
     ├── index.html                # Semantic interface with visualizer & benchmark table
@@ -97,6 +99,28 @@ OIBSIP/
 
 ---
 
+### Task 3: Temperature Converter Website — *ThermoFlow*
+- **Directory**: `Task3_TemperatureConverter/`
+- **Archive**: `AnkushKumar_Task3.zip`
+- **Tech Stack**: HTML5, CSS3 (Custom Properties & Glassmorphism), Vanilla JavaScript (ES6+)
+- **Highlights**:
+  - Precision simultaneous **4-scale conversions**: Celsius (°C), Fahrenheit (°F), Kelvin (K), and Rankine (°R).
+  - Dynamic **thermal aura and visual gauge** with 6 ambient color stages:
+    - ❄️ **< 0°C**: Sub-Zero Freezing (`#38bdf8` Cyan Frost)
+    - 🍃 **0°C to 18°C**: Cool Climate (`#2dd4bf` Aqua)
+    - 🌿 **19°C to 27°C**: Room Comfort (`#10b981` Emerald)
+    - ☀️ **28°C to 45°C**: High Heat (`#f59e0b` Amber Gold)
+    - 🔥 **46°C to 99°C**: Extreme Heat (`#f97316` Orange)
+    - ♨️ **≥ 100°C**: Boiling Vapor (`#ef4444` Crimson)
+  - Real-time **mathematical formula derivations** dynamically rendered based on the active unit pairing.
+  - Interactive **dual-input sync**: standard numeric text field coupled with a tactile thermodynamic slider.
+  - **Quick Physical Benchmark Presets**: Absolute Zero (−273.15 °C), Freezing (0 °C), Room Temp (22 °C), Body Temp (37 °C), Boiling (100 °C), and Sun Surface (5,505 °C).
+  - **Thermodynamic limit protection**: Automatically prevents impossible temperatures below Absolute Zero (0 K).
+  - One-click **clipboard copy** with animated confirmation toast notification.
+  - Zero external frameworks or libraries.
+
+---
+
 ## 🌐 Live Deployment on Render (or Vercel / Netlify)
 
 Each task is self-contained and can be deployed independently as a static site:
@@ -119,7 +143,16 @@ Each task is self-contained and can be deployed independently as a static site:
    ```
 4. Set **Publish Directory** to `.` and click **Create Static Site**.
 
-Both websites will have their own independent, permanent live `.onrender.com` URLs!
+### Deploying Task 3 on Render:
+1. Create a third **Static Site** on Render.
+2. Connect the same repository: `https://github.com/mr-ankush876/OIBSIP`.
+3. In the **Root Directory** field, enter:
+   ```text
+   Task3_TemperatureConverter
+   ```
+4. Set **Publish Directory** to `.` and click **Create Static Site**.
+
+All three websites will have their own independent, permanent live `.onrender.com` URLs!
 
 ---
 
@@ -134,6 +167,8 @@ Both websites will have their own independent, permanent live `.onrender.com` UR
    - Navigate to `Task1_LandingPage/` and double-click `index.html`.
 3. To preview **Task 2 (Portfolio)**:
    - Navigate to `Task2_Portfolio/` and double-click `index.html`.
+4. To preview **Task 3 (Temperature Converter)**:
+   - Navigate to `Task3_TemperatureConverter/` and double-click `index.html`.
 
 ---
 
