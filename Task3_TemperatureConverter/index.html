@@ -1,18 +1,21 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TempConvert | Professional Temperature Converter</title>
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
   <div class="app-layout">
     <header class="app-header">
       <div class="header-inner">
         <div class="brand">
           <div class="brand-icon">
-            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.2"
+              stroke-linecap="round" stroke-linejoin="round">
               <path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"></path>
             </svg>
           </div>
@@ -23,7 +26,8 @@
         </div>
 
         <button type="button" id="themeToggle" class="theme-toggle-btn" aria-label="Toggle light or dark theme">
-          <svg class="sun-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg class="sun-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="12" cy="12" r="5"></circle>
             <line x1="12" y1="1" x2="12" y2="3"></line>
             <line x1="12" y1="21" x2="12" y2="23"></line>
@@ -34,7 +38,8 @@
             <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
             <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
           </svg>
-          <svg class="moon-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg class="moon-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
           </svg>
         </button>
@@ -49,15 +54,8 @@
               <div class="input-field-group">
                 <label for="tempInput" class="field-label">Temperature Value</label>
                 <div class="input-wrapper">
-                  <input
-                    type="number"
-                    id="tempInput"
-                    class="field-input"
-                    step="any"
-                    placeholder="Enter value (e.g. 25, -10, 98.6)..."
-                    autocomplete="off"
-                    required
-                  >
+                  <input type="number" id="tempInput" class="field-input" step="any"
+                    placeholder="Enter value (e.g. 25, -10, 98.6)..." autocomplete="off" required>
                   <span id="activeUnitBadge" class="input-badge">&deg;C</span>
                 </div>
               </div>
@@ -71,13 +69,16 @@
                       <option value="F">Fahrenheit (&deg;F)</option>
                       <option value="K">Kelvin (K)</option>
                     </select>
-                    <svg class="select-chevron" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <svg class="select-chevron" viewBox="0 0 24 24" width="16" height="16" fill="none"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                       <polyline points="6 9 12 15 18 9"></polyline>
                     </svg>
                   </div>
 
-                  <button type="button" id="swapUnitBtn" class="btn-swap" aria-label="Cycle input scale" title="Cycle input scale">
-                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <button type="button" id="swapUnitBtn" class="btn-swap" aria-label="Cycle input scale"
+                    title="Cycle input scale">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"
+                      stroke-linecap="round" stroke-linejoin="round">
                       <path d="M7 16V4M7 4L3 8M7 4L11 8M17 8V20M17 20L21 16M17 20L13 16"></path>
                     </svg>
                   </button>
@@ -89,7 +90,8 @@
 
             <div class="form-actions">
               <button type="submit" id="convertBtn" class="btn btn-primary">
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
                   <polyline points="13 17 18 12 13 7"></polyline>
                   <polyline points="6 17 11 12 6 7"></polyline>
                 </svg>
@@ -97,7 +99,8 @@
               </button>
 
               <button type="button" id="resetBtn" class="btn btn-secondary">
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
                   <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
                   <path d="M3 3v5h5"></path>
                 </svg>
@@ -127,12 +130,15 @@
                 <div id="celsiusFormula" class="result-formula">Awaiting conversion input</div>
               </div>
               <div class="result-card-footer">
-                <button type="button" class="btn-copy" id="copyCelsiusBtn" data-target="celsiusValue" aria-label="Copy Celsius result">
-                  <svg class="copy-icon" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <button type="button" class="btn-copy" id="copyCelsiusBtn" data-target="celsiusValue"
+                  aria-label="Copy Celsius result">
+                  <svg class="copy-icon" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
                     <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
                   </svg>
-                  <svg class="check-icon" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <svg class="check-icon" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor"
+                    stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                     <polyline points="20 6 9 17 4 12"></polyline>
                   </svg>
                   <span class="copy-label">Copy</span>
@@ -153,12 +159,15 @@
                 <div id="fahrenheitFormula" class="result-formula">Awaiting conversion input</div>
               </div>
               <div class="result-card-footer">
-                <button type="button" class="btn-copy" id="copyFahrenheitBtn" data-target="fahrenheitValue" aria-label="Copy Fahrenheit result">
-                  <svg class="copy-icon" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <button type="button" class="btn-copy" id="copyFahrenheitBtn" data-target="fahrenheitValue"
+                  aria-label="Copy Fahrenheit result">
+                  <svg class="copy-icon" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
                     <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
                   </svg>
-                  <svg class="check-icon" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <svg class="check-icon" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor"
+                    stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                     <polyline points="20 6 9 17 4 12"></polyline>
                   </svg>
                   <span class="copy-label">Copy</span>
@@ -179,12 +188,15 @@
                 <div id="kelvinFormula" class="result-formula">Awaiting conversion input</div>
               </div>
               <div class="result-card-footer">
-                <button type="button" class="btn-copy" id="copyKelvinBtn" data-target="kelvinValue" aria-label="Copy Kelvin result">
-                  <svg class="copy-icon" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <button type="button" class="btn-copy" id="copyKelvinBtn" data-target="kelvinValue"
+                  aria-label="Copy Kelvin result">
+                  <svg class="copy-icon" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
                     <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
                   </svg>
-                  <svg class="check-icon" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <svg class="check-icon" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor"
+                    stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                     <polyline points="20 6 9 17 4 12"></polyline>
                   </svg>
                   <span class="copy-label">Copy</span>
@@ -197,13 +209,15 @@
         <section class="card history-card" aria-label="Recent Conversion History">
           <div class="history-header">
             <div class="history-title-wrap">
-              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="12" cy="12" r="10"></circle>
                 <polyline points="12 6 12 12 16 14"></polyline>
               </svg>
               <h2 class="history-title">Recent Conversions</h2>
             </div>
-            <button type="button" id="clearHistoryBtn" class="btn-text" aria-label="Clear recent conversion history">Clear History</button>
+            <button type="button" id="clearHistoryBtn" class="btn-text"
+              aria-label="Clear recent conversion history">Clear History</button>
           </div>
 
           <div id="historyList" class="history-list"></div>
@@ -226,4 +240,5 @@
 
   <script src="script.js"></script>
 </body>
+
 </html>

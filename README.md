@@ -62,7 +62,8 @@ OIBSIP/
 └── Task3_TemperatureConverter/   # Task 3: TempConvert Web Application
     ├── index.html                # Semantic HTML5 application structure
     ├── style.css                 # Responsive stylesheet with light/dark theme system
-    └── script.js                 # Pure vanilla JS conversion engine & session history
+    ├── script.js                 # Pure vanilla JS conversion engine & session history
+    └── README.md                 # Technical documentation
 ```
 
 ---
@@ -98,25 +99,19 @@ OIBSIP/
 
 ---
 
-### Task 3: Temperature Converter Website — *ThermoFlow*
+### Task 3: Temperature Converter Website — *TempConvert*
 - **Directory**: `Task3_TemperatureConverter/`
 - **Archive**: `AnkushKumar_Task3.zip`
-- **Tech Stack**: HTML5, CSS3 (Custom Properties & Glassmorphism), Vanilla JavaScript (ES6+)
+- **Tech Stack**: Semantic HTML5, CSS3 (Modern Glassmorphic UI & Dual Theme System), Vanilla JavaScript (ES6+)
 - **Highlights**:
-  - Precision simultaneous **4-scale conversions**: Celsius (°C), Fahrenheit (°F), Kelvin (K), and Rankine (°R).
-  - Dynamic **thermal aura and visual gauge** with 6 ambient color stages:
-    - ❄️ **< 0°C**: Sub-Zero Freezing (`#38bdf8` Cyan Frost)
-    - 🍃 **0°C to 18°C**: Cool Climate (`#2dd4bf` Aqua)
-    - 🌿 **19°C to 27°C**: Room Comfort (`#10b981` Emerald)
-    - ☀️ **28°C to 45°C**: High Heat (`#f59e0b` Amber Gold)
-    - 🔥 **46°C to 99°C**: Extreme Heat (`#f97316` Orange)
-    - ♨️ **≥ 100°C**: Boiling Vapor (`#ef4444` Crimson)
-  - Real-time **mathematical formula derivations** dynamically rendered based on the active unit pairing.
-  - Interactive **dual-input sync**: standard numeric text field coupled with a tactile thermodynamic slider.
-  - **Quick Physical Benchmark Presets**: Absolute Zero (−273.15 °C), Freezing (0 °C), Room Temp (22 °C), Body Temp (37 °C), Boiling (100 °C), and Sun Surface (5,505 °C).
-  - **Thermodynamic limit protection**: Automatically prevents impossible temperatures below Absolute Zero (0 K).
-  - One-click **clipboard copy** with animated confirmation toast notification.
-  - Zero external frameworks or libraries.
+  - Precision simultaneous **3-scale conversion**: Celsius (°C), Fahrenheit (°F), and Kelvin (K).
+  - Real-time **mathematical formula derivations** dynamically rendered for each target scale (e.g. `(°C × 9/5) + 32 = °F`, `°C + 273.15 = K`).
+  - **Thermodynamic Limit Enforcement**: Enforces absolute zero boundaries (−273.15°C / −459.67°F / 0K) with accessible inline error alerts.
+  - **Dynamic Unit Swap & Cycle**: One-click cycle button that smoothly shifts input units across °C &rarr; °F &rarr; K.
+  - **Session Conversion History**: Tracks past conversions with relative timestamps and clear-all functionality, persisted in `localStorage`.
+  - **One-Click Clipboard Copying**: Built-in copy buttons with animated checkmark confirmation and toast notifications.
+  - **Dual Theme System**: Full Light and Dark mode switcher with persistent preference saved in `localStorage`.
+  - Strictly **zero external libraries or frameworks** and **zero comments** in source code.
 
 ---
 
