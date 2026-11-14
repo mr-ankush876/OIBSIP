@@ -115,7 +115,7 @@ OIBSIP/
 
 ---
 
-## 🌐 Live Deployment on Render (or Vercel / Netlify)
+## 🌐 Live Deployment on Render 
 
 Each task is self-contained and can be deployed independently as a static site:
 
@@ -146,7 +146,7 @@ Each task is self-contained and can be deployed independently as a static site:
    ```
 4. Set **Publish Directory** to `.` and click **Create Static Site**.
 
-All three websites will have their own independent, permanent live `.onrender.com` URLs!
+All three websites will have their own independent, permanent live `.onrender.com` URLs.
 
 ---
 
